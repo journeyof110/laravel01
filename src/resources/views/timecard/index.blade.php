@@ -10,14 +10,14 @@
     'type' => 'submit',
     'class' => 'btn btn-app bg-maroon',
     'name' => 'hasClieckedEnd',
-    'formaction' => route('time_card.end', ['timeCard' => $timeCard->id]),
+    'formaction' => route('time_card.end', ['timeCard' => optional($timeCard)->id]),
     'value' => true,
   ];
 
   if (isset($timeCard->id) && is_null($timeCard->end_time)) {
     $startOptions['disabled'] = 'disabled';
     $startOptions['value'] = false;
-    $startTime = $timeCard->start_time;
+    $startTime = $timeCard->start_datetime;
   } else {
     $endOptions['disabled'] = 'disabled';
     $endOptions['value'] = false;

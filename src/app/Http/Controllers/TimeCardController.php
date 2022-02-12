@@ -35,8 +35,13 @@ class TimeCardController extends Controller
             return back()->withError('作業開始が正しく処理できませんでした。');
         }
 
-        $timeCard = TimeCard::create(['start_time' => Carbon::now()]);
-        return back()->with('success', $timeCard->start_time . ' 作業を開始しました。');
+        $now = Carbon::now();
+        $timeCard = new TimeCard();
+        $timeCard->date = $now;
+        $timeCard->start_time = $now->format('H:i:s');
+        $timeCard->save();
+
+        return back()->with('success', $timeCard->start_datetime . ' 作業を開始しました。');
     }
     
     /**
@@ -50,14 +55,23 @@ class TimeCardController extends Controller
     {
         Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
 
-        Log::debug("hasClieckEnd: " . $request->hasClieckedEnd);
         if ($request->get('hasClieckedEnd') != 1) {
             return back()->withError('作業終了が正しく処理できませんでした。');
         }
 
-        $timeCard->end_time = Carbon::now();
+        // 開始と終了の日付が異なる場合、レコードを分ける
+        $now = Carbon::now();
+        if ($timeCard->day !== $now->day) {
+            $timeCard->end_time = '23:59:59';
+            $timeCard->save();
+            $timeCard = new TimeCard();
+            $timeCard->date = $now;
+            $timeCard->start_time = '00:00:00';
+        }
+        $timeCard->end_time = $now->format('H:i:s');
         $timeCard->save();
-        return back()->with('success', $timeCard->end_time . ' 作業を終了しました。');
+
+        return back()->with('success', $timeCard->end_datetime . ' 作業を終了しました。');
     }
 
     /**
