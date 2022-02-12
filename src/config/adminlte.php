@@ -235,8 +235,19 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
         // Sidebar items:
+        ['header' => 'オリジナルメニュー'],
+        [
+            'text'  => 'カスタム画面',
+            'icon'  => 'fas fa-wrench',
+            'submenu' => [
+                [
+                    'text'  => 'タイムカード',
+                    'icon'  => 'fas fa-clock',
+                    'url'   => 'time_card',
+                ],
+            ],
+        ],
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
@@ -422,6 +433,26 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'bootstrapSwitch' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/jquery/jquery.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.js',
                 ],
             ],
         ],

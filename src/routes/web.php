@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TimeCardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::view('/', 'home');
 Route::view('/home', 'home');
+
+Route::controller(TimeCardController::class)->prefix('time_card')->name('time_card')->group(function() {
+  Route::get('/', 'index');
+  Route::post('/start', 'start')->name('.start');
+  Route::post('/end/{timeCard}', 'end')->name('.end');
+});
