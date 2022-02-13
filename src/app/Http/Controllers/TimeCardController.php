@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TimeCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Log;
 
 class TimeCardController extends Controller
@@ -14,11 +15,20 @@ class TimeCardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         Log::info('stert index');
-        $timeCard = TimeCard::latest()->first();
-        return view('timecard.index', ['timeCard' => $timeCard]);
+        $latestTimeCard = TimeCard::latest()->first();
+
+        $now = Carbon::now();
+        $year = $request->get('year', $now->year);
+        $month = $request->get('month', $now->month);
+        $timeCards = TimeCard::month($year, $month)->get();
+
+        return view('timecard.index', [
+            'latestTimeCard' => $latestTimeCard,
+            'timeCards' => $timeCards,
+        ]);
     }
 
     /**
@@ -47,11 +57,11 @@ class TimeCardController extends Controller
     /**
      * 終了日時を設定
      *
-     * @param TimeCard $timeCard
      * @param Request $request
+     * @param TimeCard $timeCard
      * @return void
      */
-    public function end(TimeCard $timeCard, Request $request)
+    public function end(Request $request, TimeCard $timeCard)
     {
         Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
 

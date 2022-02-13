@@ -10,14 +10,14 @@
     'type' => 'submit',
     'class' => 'btn btn-app bg-maroon',
     'name' => 'hasClieckedEnd',
-    'formaction' => route('time_card.end', ['timeCard' => optional($timeCard)->id]),
+    'formaction' => route('time_card.end', ['timeCard' => optional($latestTimeCard)->id]),
     'value' => true,
   ];
 
-  if (isset($timeCard->id) && is_null($timeCard->end_time)) {
+  if (isset($latestTimeCard->id) && is_null($latestTimeCard->end_time)) {
     $startOptions['disabled'] = 'disabled';
     $startOptions['value'] = false;
-    $startTime = $timeCard->start_datetime;
+    $startTime = $latestTimeCard->start_datetime;
   } else {
     $endOptions['disabled'] = 'disabled';
     $endOptions['value'] = false;
@@ -60,6 +60,28 @@
                 タイムカード
               </div>
               <div class="card-body">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>日 (曜日)</th>
+                      <th>開始時刻</th>
+                      <th>終了時刻</th>
+                      <th>カテゴリ</th>
+                      <th>アクション</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($timeCards as $timeCard)
+                      <tr>
+                        <td>{{$timeCard->dayAndDayName}}</td>
+                        <td>{{$timeCard->start_time}}</td>
+                        <td>{{$timeCard->end_time}}</td>
+                        <td>{{$timeCard->categury_id}}</td>
+                        <td></td>
+                      </tr>
+                      @endforeach
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
