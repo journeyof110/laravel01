@@ -25,7 +25,7 @@ class TimeCardController extends Controller
         $month = $request->get('month', $now->month);
         $timeCards = TimeCard::month($year, $month)->get();
 
-        return view('timecard.index', [
+        return view('time_card.index', [
             'latestTimeCard' => $latestTimeCard,
             'timeCards' => $timeCards,
         ]);
@@ -66,7 +66,7 @@ class TimeCardController extends Controller
         Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
 
         if ($request->get('hasClieckedEnd') != 1) {
-            return back()->withError('作業終了が正しく処理できませんでした。');
+            return $this->endMissing();
         }
 
         // 開始と終了の日付が異なる場合、レコードを分ける
@@ -82,6 +82,11 @@ class TimeCardController extends Controller
         $timeCard->save();
 
         return back()->with('success', $timeCard->end_datetime . ' 作業を終了しました。');
+    }
+
+    public function endMissing()
+    {
+        return back()->withError('作業終了が正しく処理できませんでした。');
     }
 
     /**
