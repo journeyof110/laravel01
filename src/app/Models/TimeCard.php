@@ -26,7 +26,7 @@ class TimeCard extends Model
 
         return Carbon::createMidnightDate($this->year, $this->month, $this->day)
             ->createFromTimeString($this->start_time)
-            ->format('Y年m月d日 H時i分s秒');
+            ->format('Y年m月d日 H時i分');
     }
 
     // /**
