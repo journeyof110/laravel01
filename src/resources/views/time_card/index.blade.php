@@ -39,25 +39,33 @@
         <div class="col-12">
             <div class="card">
               <div class="card-header">
-                入力フォーム
+                <h3 class="card-title">入力フォーム</h3>
               </div>
               <div class="card-body">
-                {!! Form::open([]) !!}
+                {!! Form::open() !!}
                   <div class="row">
-                      <div class="col-sm-6">
+                      <div class="col-sm-4">
                         {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
                         <h5>{{$startTime}}</h5>
                       </div>
-                      <div class="col-sm-6">
+                      <div class="col-sm-4">
                           {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
                       </div>
                   </div>
-                  {!! Form::close() !!}
+                {!! Form::close() !!}
               </div>
             </div>
             <div class="card">
-              <div class="card-header">
-                タイムカード
+              <div class="card-header d-flex p-0">
+                <h3 class="card-title p-3">タイムカード</h3>
+                <ul class="nav nav-pills ml-auto p-2">
+                  <li class="nav-item">
+                    <a class="btn btn-block btn-default" href="{{route('time_card.create')}}">
+                      <i class="fas fa-pen"></i>
+                      作成
+                    </a>
+                  </li>
+                </ul>
               </div>
               <div class="card-body">
                 <table class="table table-striped">
@@ -67,7 +75,7 @@
                       <th>開始時刻</th>
                       <th>終了時刻</th>
                       <th>カテゴリ</th>
-                      <th>アクション</th>
+                      <th class="col-sm-2 text-center">アクション</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -77,7 +85,17 @@
                         <td>{{$timeCard->start_time}}</td>
                         <td>{{$timeCard->end_time}}</td>
                         <td>{{$timeCard->categury_id}}</td>
-                        <td></td>
+                        <td class="col-sm-2 text-center ">
+                          <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
+                            <i class="fas fa-file-alt"></i>
+                          </a>
+                          <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                          <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </td>
                       </tr>
                       @endforeach
                   </tbody>
