@@ -13,6 +13,9 @@ class TimeCard extends Model
         'end_time',
     ];
 
+
+
+
     /**
      * 開始日時を取得
      *
@@ -66,8 +69,11 @@ class TimeCard extends Model
      * @param string $value
      * @return string
      */
-    public function getStartTimeAttribute($value): string
+    public function getStartTimeAttribute($value): string|null
     {
+        if (is_null($value)) {
+            return null;
+        }
         return Carbon::parse($value)->format('H:i');
     }
 
@@ -77,8 +83,11 @@ class TimeCard extends Model
      * @param string $value
      * @return string
      */
-    public function getEndTimeAttribute($value): string
+    public function getEndTimeAttribute($value): string|null
     {
+        if (is_null($value)) {
+            return null;
+        }
         return Carbon::parse($value)->format('H:i');
     }
 
@@ -95,6 +104,11 @@ class TimeCard extends Model
         $this->day = $date->day;
     }
 
+    public function scopeLatestDateTime($query): Builder
+    {
+        return $query->latest('year')->latest('month')->latest('day')->latest('start_time');
+    }
+
     /**
      * 月によりデータを絞り込む
      *
@@ -108,8 +122,11 @@ class TimeCard extends Model
         return $query->where('year', $year)->where('month', $month);
     }
 
+    
     public function scopeGroupByMonth($query)
     {
         return $query->groupBy('year', 'month')->select('year', 'month');
     }
+
+
 }

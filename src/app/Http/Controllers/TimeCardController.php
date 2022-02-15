@@ -20,7 +20,7 @@ class TimeCardController extends Controller
     public function index(Request $request)
     {
         Log::info('start index');
-        $latestTimeCard = TimeCard::latest()->first();
+        $latestTimeCard = TimeCard::latestDateTime()->first();
 
         $now = Carbon::now();
         $year = $request->get('year', $now->year);
@@ -75,7 +75,6 @@ class TimeCardController extends Controller
         if ($request->get('hasClieckedEnd') != 1) {
             return $this->showError('作業終了');
         }
-
 
         try {
             // 開始と終了の日付が異なる場合、レコードを分ける
