@@ -59,7 +59,29 @@ class TimeCard extends Model
         $day = Carbon::createMidnightDate($this->year, $this->month, $this->day);
         return $day->isoFormat('D日 (ddd)');
     }
-    
+
+    /**
+     * 開始時刻の表示を修正
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getStartTimeAttribute($value): string
+    {
+        return Carbon::parse($value)->format('H:i');
+    }
+
+    /**
+     * 終了時刻の表示を修正
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getEndTimeAttribute($value): string
+    {
+        return Carbon::parse($value)->format('H:i');
+    }
+
     /**
      * 日時を設定
      *
