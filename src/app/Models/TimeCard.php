@@ -63,10 +63,11 @@ class TimeCard extends Model
     /**
      * 日時を設定
      *
-     * @param Carbon $date
+     * @param string $date
      */
-    public function setDateAttribute(Carbon $date)
+    public function setDateAttribute(string $date)
     {
+        $date = Carbon::parse($date);
         $this->year = $date->year;
         $this->month = $date->month;
         $this->day = $date->day;

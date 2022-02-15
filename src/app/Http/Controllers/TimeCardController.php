@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTimeCardRequest;
 use App\Models\TimeCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class TimeCardController extends Controller
      */
     public function index(Request $request)
     {
-        Log::info('stert index');
+        Log::info('start index');
         $latestTimeCard = TimeCard::latest()->first();
 
         $now = Carbon::now();
@@ -47,7 +48,7 @@ class TimeCardController extends Controller
 
         $now = Carbon::now();
         $timeCard = new TimeCard();
-        $timeCard->date = $now;
+        $timeCard->date = $now->format('Y-m-d');
         $timeCard->start_time = $now->format('H:i:00');
         $timeCard->save();
 
@@ -64,29 +65,36 @@ class TimeCardController extends Controller
     public function end(Request $request, TimeCard $timeCard)
     {
         Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
-
+        
         if ($request->get('hasClieckedEnd') != 1) {
-            return $this->endMissing();
+            return $this->missing('終了');
         }
-
+        
         // 開始と終了の日付が異なる場合、レコードを分ける
         $now = Carbon::now();
         if ($timeCard->day !== $now->day) {
             $timeCard->end_time = '23:59:59';
             $timeCard->save();
             $timeCard = new TimeCard();
-            $timeCard->date = $now;
+            $timeCard->date = $now->format('Y-m-d');
             $timeCard->start_time = '00:00:00';
         }
         $timeCard->end_time = $now->format('H:i:00');
         $timeCard->save();
-
+        
         return back()->with('success', $timeCard->end_datetime . ' 作業を終了しました。');
     }
-
-    public function endMissing()
+    
+    /**
+     * エラー発生時の処理
+     *
+     * @param string $action
+     * @return void
+     */
+    public function missing($action)
     {
-        return back()->withError('作業終了が正しく処理できませんでした。');
+        Log::info("start missing", ['action' => $action]);
+        return back()->withError($action . 'について正しく処理できませんでした。');
     }
 
     /**
@@ -96,7 +104,8 @@ class TimeCardController extends Controller
      */
     public function create()
     {
-        //
+        Log::info("start create");
+        return view('time_card.create');
     }
 
     /**
@@ -107,7 +116,20 @@ class TimeCardController extends Controller
      */
     public function store(StoreTimeCardRequest $request)
     {
-        //
+        Log::info("start store", ['request' => $request->all()]);
+        try {
+            $timeCard = new TimeCard();
+            $inputs = $request->except('_token');
+            foreach ($inputs as $key => $value) {
+                $timeCard->{$key} = $value;
+            }
+            $timeCard->save();
+        } catch (\Throwable $th) {
+            Log::error("SQL error: " . $th->getMessage());
+            return $this->missing('タイムカード作成');
+        }
+
+        return back()->with('success', 'タイムカードデータを作成しました。');
     }
 
     /**
@@ -129,7 +151,7 @@ class TimeCardController extends Controller
      */
     public function edit(TimeCard $timeCard)
     {
-        //
+        return view('time_card.edit', ['timeCard' => $timeCard]);
     }
 
     /**
