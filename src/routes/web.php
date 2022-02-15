@@ -20,7 +20,7 @@ Route::view('/home', 'home');
 Route::controller(TimeCardController::class)->prefix('time_card')->name('time_card')->group(function() {
   Route::get('/', 'index');
   Route::post('/start', 'start')->name('.start');
-  Route::post('/end/{timeCard}', 'end')->name('.end');
+  Route::post('/end/{timeCard?}', 'end')->name('.end')->missing('showError', ['action' => '終了']);
   Route::get('/create', 'create')->name('.create');
   Route::post('/create', 'store')->name('.store');
   Route::get('/show/{timeCard}', 'show')->name('.show');
