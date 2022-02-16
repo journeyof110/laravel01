@@ -44,13 +44,16 @@
               <div class="card-body">
                 {!! Form::open() !!}
                   <div class="row">
-                      <div class="col-sm-4">
-                        {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
-                        <h5>{{$startTime}}</h5>
-                      </div>
-                      <div class="col-sm-4">
-                          {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
-                      </div>
+                    <div class="col-sm-3">
+                      {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
+                      <h5>{{$startTime}}</h5>
+                    </div>
+                    <div class="col-sm-3">
+                      {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
+                    </div>
+                    <div class="col-sm-6">
+                      {!! Form::textarea('memo', $latestTimeCard->memo, ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
+                    </div>
                   </div>
                 {!! Form::close() !!}
               </div>
