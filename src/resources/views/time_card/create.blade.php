@@ -19,9 +19,9 @@
         <div class="col-md-2">
           <label>年月日</label>
         </div>
-        <div class="col-md-3 input-group date">
-          <input type="text" name="date" value="{{old('date')}}" class="form-control datetimepicker-input{{(!$errors->has('date') ?: ' is-invalid')}}" placeholder="yyyy-mm-dd">
-          <div class="input-group-append">
+        <div class="col-md-3 input-group date" id="datetimepicker" data-target-input="nearest">
+          <input type="text" name="date" value="{{old('date')}}" data-target="#datetimepicker" class="form-control datetimepicker-input{{(!$errors->has('date') ?: ' is-invalid')}}" placeholder="yyyy-mm-dd">
+          <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
             <div class="input-group-text">
               <i class="far fa-calendar"></i>
             </div>
@@ -83,3 +83,13 @@
   </div>
 </div>
 @endsection
+@push('js')
+<script type="text/javascript">
+  $(function () {
+    $('#datetimepicker').datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: 'ja',
+    });
+  });
+</script>
+@endpush

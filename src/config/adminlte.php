@@ -238,6 +238,17 @@ return [
         // Sidebar items:
         ['header' => 'オリジナルメニュー'],
         [
+            'text'    => 'viewのみの画面',
+            'icon'    => 'fas fa-external-link-alt',
+            'submenu' => [
+                [
+                    'text' => 'リンク',
+                    'icon' => 'far fa-copy',
+                    'url'  => 'link',
+                ],
+            ],
+        ],
+        [
             'text'  => 'カスタム画面',
             'icon'  => 'fas fa-wrench',
             'submenu' => [
@@ -453,6 +464,31 @@ return [
                     'type' => 'js',
                     'asset' => true,
                     'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.js',
+                ],
+            ],
+        ],
+        'tempusdominusBootstrap4' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/jquery/jquery.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/moment/moment.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '/vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css',
                 ],
             ],
         ],
