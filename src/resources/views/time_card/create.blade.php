@@ -35,7 +35,7 @@
         <div class="col-md-2">
           <label>開始時刻</label>
         </div>
-        <div class="col-md-3 input-group date">
+        <div class="col-md-3 input-group date input-time">
           <input type="time" name="start_time" value="{{old('start_time')}}" class="icon-del form-control {{(!$errors->has('start_time') ?: 'is-invalid')}}" placeholder="00:00">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -51,7 +51,7 @@
         <div class="col-md-2">
           <label>終了時刻</label>
         </div>
-        <div class="col-md-3 input-group date">
+        <div class="col-md-3 input-group date input-time">
           <input type="time" name="end_time" value="{{old('end_time')}}" class="form-control {{(!$errors->has('end_time') ?: 'is-invalid')}}" placeholder="23:59">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -83,6 +83,26 @@
   </div>
 </div>
 @endsection
+
+@push('css')
+<style type="text/css">
+  .input-time{
+    position: relative;
+  }
+  input[type="time"]::-webkit-calendar-picker-indicator{
+    position: absolute;
+    right: -40px;
+    top: 0px;
+    padding: 0;
+    width: 40px;
+    height: 36px;
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+  }
+</style>
+@endpush
+
 @push('js')
 <script type="text/javascript">
   $(function () {
