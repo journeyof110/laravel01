@@ -13,9 +13,6 @@ class TimeCard extends Model
         'end_time',
     ];
 
-
-
-
     /**
      * 開始日時を取得
      *
@@ -106,7 +103,11 @@ class TimeCard extends Model
 
     public function scopeLatestDateTime($query): Builder
     {
-        return $query->latest('year')->latest('month')->latest('day')->latest('start_time');
+        return $query->latest('year')
+            ->latest('month')
+            ->latest('day')
+            ->latest('start_time')
+            ->whereNull('end_time');
     }
 
     /**
