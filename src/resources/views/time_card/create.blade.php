@@ -20,7 +20,7 @@
           <label>年月日</label>
         </div>
         <div class="col-md-3 input-group date" id="datetimepicker" data-target-input="nearest">
-          <input type="text" name="date" value="{{old('date')}}" data-target="#datetimepicker" class="form-control datetimepicker-input{{(!$errors->has('date') ?: ' is-invalid')}}" placeholder="yyyy-mm-dd">
+          <input type="text" name="date" value="{{old('date')}}" data-target="#datetimepicker" class="form-control {{(!$errors->has('date') ?: ' is-invalid')}}" placeholder="yyyy-mm-dd">
           <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
             <div class="input-group-text">
               <i class="far fa-calendar"></i>
@@ -36,7 +36,7 @@
           <label>開始時刻</label>
         </div>
         <div class="col-md-3 input-group date">
-          <input type="text" name="start_time" value="{{old('start_time')}}" class="form-control datetimepicker-input{{(!$errors->has('start_time') ?: ' is-invalid')}}" placeholder="00:00">
+          <input type="time" name="start_time" value="{{old('start_time')}}" class="icon-del form-control {{(!$errors->has('start_time') ?: 'is-invalid')}}" placeholder="00:00">
           <div class="input-group-append">
             <div class="input-group-text">
               <i class="far fa-clock"></i>
@@ -52,7 +52,7 @@
           <label>終了時刻</label>
         </div>
         <div class="col-md-3 input-group date">
-          <input type="text" name="end_time" value="{{old('end_time')}}" class="form-control datetimepicker-input{{(!$errors->has('end_time') ?: ' is-invalid')}}" placeholder="23:59">
+          <input type="time" name="end_time" value="{{old('end_time')}}" class="form-control {{(!$errors->has('end_time') ?: 'is-invalid')}}" placeholder="23:59">
           <div class="input-group-append">
             <div class="input-group-text">
               <i class="far fa-clock"></i>

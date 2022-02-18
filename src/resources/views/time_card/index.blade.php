@@ -52,7 +52,7 @@
                       {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
                     </div>
                     <div class="col-sm-6">
-                      {!! Form::textarea('memo', $latestTimeCard->memo, ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
+                      {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
                     </div>
                   </div>
                 {!! Form::close() !!}

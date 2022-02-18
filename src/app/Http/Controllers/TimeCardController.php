@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTimeCardRequest;
+use App\Http\Requests\TimeCard\EndTimeCardRequest;
+use App\Http\Requests\TimeCard\StartTimeCardRequest;
+use App\Http\Requests\TimeCard\StoreTimeCardRequest;
 use App\Models\TimeCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -39,7 +41,7 @@ class TimeCardController extends Controller
      * @param Request $request
      * @return void
      */
-    public function start(Request $request)
+    public function start(StartTimeCardRequest $request)
     {
         Log::info("start start", $request->all());
 
@@ -52,6 +54,7 @@ class TimeCardController extends Controller
             $timeCard = new TimeCard();
             $timeCard->date = $now->format('Y-m-d');
             $timeCard->start_time = $now->format('H:i:00');
+            $timeCard->memo = $request->memo;
             $timeCard->save();
         } catch (\Throwable $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
@@ -68,7 +71,7 @@ class TimeCardController extends Controller
      * @param TimeCard $timeCard
      * @return void
      */
-    public function end(Request $request, TimeCard $timeCard)
+    public function end(EndTimeCardRequest $request, TimeCard $timeCard)
     {
         Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
         
@@ -81,10 +84,12 @@ class TimeCardController extends Controller
             $now = Carbon::now();
             if ($timeCard->day !== $now->day) {
                 $timeCard->end_time = '23:59:59';
+                $timeCard->memo = $request->memo;
                 $timeCard->save();
                 $timeCard = new TimeCard();
                 $timeCard->date = $now->format('Y-m-d');
                 $timeCard->start_time = '00:00:00';
+                $timeCard->memo = $request->memo;
             }
             $timeCard->end_time = $now->format('H:i:00');
             $timeCard->save();
