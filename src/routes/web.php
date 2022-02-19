@@ -25,5 +25,6 @@ Route::controller(TimeCardController::class)->prefix('time_card')->name('time_ca
   Route::post('/create', 'store')->name('.store');
   Route::get('/show/{timeCard}', 'show')->name('.show');
   Route::get('/edit/{timeCard}', 'edit')->name('.edit');
+  Route::post('/edit/{timeCard}', 'update')->name('.update');
   Route::get('/destroy/{timeCard}', 'destroy')->name('.destroy');
 });

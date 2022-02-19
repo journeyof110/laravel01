@@ -1,0 +1,1 @@
+@extends('time_card.extends.form', ['type' => '更新', 'timeCard' => $timeCard])

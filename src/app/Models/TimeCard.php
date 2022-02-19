@@ -88,6 +88,11 @@ class TimeCard extends Model
         return Carbon::parse($value)->format('H:i');
     }
 
+    public function getDateAttribute()
+    {
+        return implode('-', $this->only('year', 'month', 'day'));
+    }
+
     /**
      * 日時を設定
      *

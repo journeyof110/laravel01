@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TimeCard\EndTimeCardRequest;
 use App\Http\Requests\TimeCard\StartTimeCardRequest;
 use App\Http\Requests\TimeCard\StoreTimeCardRequest;
+use App\Http\Requests\TimeCard\UpdateTimeCardRequest;
 use App\Models\TimeCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class TimeCardController extends Controller
         $now = Carbon::now();
         $year = $request->get('year', $now->year);
         $month = $request->get('month', $now->month);
-        $timeCards = TimeCard::month($year, $month)->get();
+        $timeCards = TimeCard::month($year, $month)->sortDateTime()->get();
 
         return view('time_card.index', [
             'latestTimeCard' => $latestTimeCard,
@@ -74,7 +75,7 @@ class TimeCardController extends Controller
     public function end(EndTimeCardRequest $request, TimeCard $timeCard)
     {
         Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
-        
+
         if ($request->get('hasClieckedEnd') != 1) {
             return $this->showError('作業終了');
         }
@@ -100,7 +101,7 @@ class TimeCardController extends Controller
         
         return back()->with('success', $timeCard->end_datetime . ' 作業を終了しました。');
     }
-    
+
     /**
      * エラー発生時の処理
      *
@@ -165,8 +166,9 @@ class TimeCardController extends Controller
      * @param  \App\Models\TimeCard  $timeCard
      * @return \Illuminate\Http\Response
      */
-    public function edit(TimeCard $timeCard)
+    public function edit(Request $request, TimeCard $timeCard)
     {
+        $request->session()->flash('timeCard', $timeCard);
         return view('time_card.edit', ['timeCard' => $timeCard]);
     }
 
@@ -179,7 +181,19 @@ class TimeCardController extends Controller
      */
     public function update(UpdateTimeCardRequest $request, TimeCard $timeCard)
     {
-        //
+        Log::info("start update", ['request' => $request->all()]);
+        try {
+            $inputs = $request->except('_token');
+            foreach ($inputs as $key => $value) {
+                $timeCard->{$key} = $value;
+            }
+            $timeCard->save();
+        } catch (\Throwable $th) {
+            Log::error("SQL error: ", ['message' => $th->getMessage()]);
+            return $this->showError('タイムカード更新');
+        }
+
+        return back()->with('success', 'タイムカードデータを更新しました。');
     }
 
     /**

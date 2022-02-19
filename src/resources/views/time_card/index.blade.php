@@ -92,7 +92,7 @@
                           <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
                             <i class="fas fa-file-alt"></i>
                           </a>
-                          <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
+                          <a class="link-muted m-3" href="{{route('time_card.edit', ['timeCard' => $timeCard->id])}}">
                             <i class="fas fa-edit"></i>
                           </a>
                           <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
