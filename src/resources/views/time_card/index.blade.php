@@ -60,7 +60,7 @@
             </div>
             <div class="card">
               <div class="card-header d-flex p-0">
-                <h3 class="card-title p-3">タイムカード</h3>
+                <h3 class="card-title p-3">タイムカード一覧</h3>
                 <ul class="nav nav-pills ml-auto p-2">
                   <li class="nav-item">
                     <a class="btn btn-block btn-default" href="{{route('time_card.create')}}">
