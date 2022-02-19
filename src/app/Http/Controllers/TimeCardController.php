@@ -55,7 +55,7 @@ class TimeCardController extends Controller
             $timeCard = new TimeCard();
             $timeCard->date = $now->format('Y-m-d');
             $timeCard->start_time = $now->format('H:i:00');
-            $timeCard->memo = $request->memo;
+            $timeCard->memo = $request->get('memo');
             $timeCard->save();
         } catch (\Throwable $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
@@ -83,14 +83,14 @@ class TimeCardController extends Controller
         try {
             // 開始と終了の日付が異なる場合、レコードを分ける
             $now = Carbon::now();
+            $timeCard->memo = $request->get('memo');
             if ($timeCard->day !== $now->day) {
                 $timeCard->end_time = '23:59:59';
-                $timeCard->memo = $request->memo;
                 $timeCard->save();
-                $timeCard = new TimeCard();
+
+                $timeCard = $timeCard->replicate();
                 $timeCard->date = $now->format('Y-m-d');
                 $timeCard->start_time = '00:00:00';
-                $timeCard->memo = $request->memo;
             }
             $timeCard->end_time = $now->format('H:i:00');
             $timeCard->save();
