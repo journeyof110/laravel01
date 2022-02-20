@@ -115,6 +115,18 @@ class TimeCardController extends Controller
     }
 
     /**
+     * タイムカードデータ取得不可エラー
+     *
+     * @param string $action
+     * @return void
+     */
+    public static function missingError()
+    {
+        Log::info("start showError");
+        return back()->withError('タイムカードデータを取得できませんでした。');
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
