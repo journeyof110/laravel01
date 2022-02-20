@@ -14,53 +14,6 @@ class TimeCard extends Model
     ];
 
     /**
-     * 開始日時を取得
-     *
-     * @return string
-     */
-    public function getStartDateTimeAttribute() : string
-    {
-        if (is_null($this->start_time)) {
-            return null;
-        }
-
-        return Carbon::createMidnightDate($this->year, $this->month, $this->day)
-            ->createFromTimeString($this->start_time)
-            ->format('Y年m月d日 H時i分');
-    }
-
-    // /**
-    //  * 終了日時を取得
-    //  *
-    //  * @return string
-    //  */
-    // public function getEndDateTimeAttribute(): string
-    // {
-    //     if (is_null($this->start_end)) {
-    //         return null;
-    //     }
-
-    //     return Carbon::createMidnightDate($this->year, $this->month, $this->day)
-    //         ->createFromTimeString($this->end_time)
-    //         ->format('Y年m月d日 H時i分s秒');
-    // }
-
-    /**
-     * 日にちと曜日を取得　'D日 (ddd)'
-     *
-     * @return string
-     */
-    public function getDayAndDayNameAttribute(): string
-    {
-        if (!isset($this->day)) {
-            return '';
-        }
-        Carbon::setLocale('ja');
-        $day = Carbon::createMidnightDate($this->year, $this->month, $this->day);
-        return $day->isoFormat('D日 (ddd)');
-    }
-
-    /**
      * 開始時刻の表示を修正
      *
      * @param string $value
@@ -88,9 +41,45 @@ class TimeCard extends Model
         return Carbon::parse($value)->format('H:i');
     }
 
-    public function getDateAttribute()
+    /**
+     * 年月日を表示用に修正
+     *
+     * @return string
+     */
+    public function getDateAttribute() : string
     {
         return implode('-', $this->only('year', 'month', 'day'));
+    }
+
+    /**
+     * 開始日時を取得
+     *
+     * @return string
+     */
+    public function getStartDateTimeAttribute() : string
+    {
+        if (is_null($this->start_time)) {
+            return null;
+        }
+
+        return Carbon::createMidnightDate($this->year, $this->month, $this->day)
+            ->createFromTimeString($this->start_time)
+            ->format('Y年m月d日 H時i分');
+    }
+
+    /**
+     * 日にちと曜日を取得　'D日 (ddd)'
+     *
+     * @return string
+     */
+    public function getDayAndDayNameAttribute(): string
+    {
+        if (!isset($this->day)) {
+            return '';
+        }
+        Carbon::setLocale('ja');
+        $day = Carbon::createMidnightDate($this->year, $this->month, $this->day);
+        return $day->isoFormat('D日 (ddd)');
     }
 
     /**
