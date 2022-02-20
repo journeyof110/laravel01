@@ -157,7 +157,7 @@ class TimeCardController extends Controller
      */
     public function show(TimeCard $timeCard)
     {
-        //
+        return view('time_card.show', ['timeCard' => $timeCard]);
     }
 
     /**
