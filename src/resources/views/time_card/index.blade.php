@@ -89,15 +89,15 @@
                         <td>{{$timeCard->end_time}}</td>
                         <td>{{$timeCard->categury_id}}</td>
                         <td class="col-sm-2 text-center ">
-                          <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
+                          <a class="btn btn-default" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}" >
                             <i class="fas fa-file-alt"></i>
                           </a>
-                          <a class="link-muted m-3" href="{{route('time_card.edit', ['timeCard' => $timeCard->id])}}">
+                          <a class="btn btn-default" href="{{route('time_card.edit', ['timeCard' => $timeCard->id])}}">
                             <i class="fas fa-edit"></i>
                           </a>
-                          <a class="link-muted m-3" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}">
+                          <button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->dayAndTime}}' data-link="{{route('time_card.destroy', ['timeCard' => $timeCard->id])}}">
                             <i class="fas fa-trash"></i>
-                          </a>
+                          </button>
                         </td>
                       </tr>
                       @endforeach
@@ -108,10 +108,38 @@
           </div>
         </div>
     </div>
+    <div class="modal fade" id="modal" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">削除の確認</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>タイムカードデータを削除しますか？</p>
+            <blockquote class="quote-danger">
+              <small id="modal-timecard-day"></small>
+            </blockquote>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+            <a href="" class="btn btn-primary">削除する</a>
+          </div>
+        </div>
+      </div>
+    </div>
 @stop
 
 @section('adminlte_js')
-    <script>
-      $("[name='option-param']").bootstrapSwitch();
-    </script>
+  <script>
+    // モーダルにパラメータ渡し
+    $('.btn-delete').on('click', function (event) {
+      var dayTime = $(this).data('daytime');
+      var link = $(this).data('link');
+      $('#modal-timecard-day').html(dayTime);
+      $('.modal-footer a').attr('href', link);
+    });
+  </script>
 @stop

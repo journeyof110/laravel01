@@ -5,9 +5,14 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TimeCard extends Model
 {
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'start_time',
         'end_time',
@@ -80,6 +85,16 @@ class TimeCard extends Model
         Carbon::setLocale('ja');
         $day = Carbon::createMidnightDate($this->year, $this->month, $this->day);
         return $day->isoFormat('D日 (ddd)');
+    }
+
+    /**
+     * 日にちと時刻を表示
+     *
+     * @return string
+     */
+    public function getDayAndTimeAttribute(): string
+    {
+        return $this->dayAndDayName . ' ［開始］' . $this->start_time . ' ［終了］' . $this->end_time;
     }
 
     /**

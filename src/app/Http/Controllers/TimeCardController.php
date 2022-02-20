@@ -216,6 +216,13 @@ class TimeCardController extends Controller
      */
     public function destroy(TimeCard $timeCard)
     {
-        //
+        Log::info("start destroy", ['timeCard' => $timeCard]);
+        try {
+            $timeCard->delete();
+        } catch (\Throwable $th) {
+            Log::error("SQL error: ", ['message' => $th->getMessage()]);
+            return $this->showError('タイムカード削除');
+        }
+        return back()->with('success', 'タイムカードデータを削除しました。');
     }
 }

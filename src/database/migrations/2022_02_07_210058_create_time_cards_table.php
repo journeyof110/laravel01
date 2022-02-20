@@ -23,6 +23,7 @@ class CreateTimeCardsTable extends Migration
             $table->time('end_time')->nullable()->comment('終了時間');
             $table->text('memo')->nullable()->comment('メモ');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
