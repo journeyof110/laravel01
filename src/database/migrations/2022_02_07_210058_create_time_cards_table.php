@@ -21,7 +21,7 @@ class CreateTimeCardsTable extends Migration
             $table->unsignedTinyInteger('day')->comment('日');
             $table->time('start_time')->nullable()->comment('開始時間');
             $table->time('end_time')->nullable()->comment('終了時間');
-            $table->string('memo')->nullable()->comment('メモ');
+            $table->text('memo')->nullable()->comment('メモ');
             $table->timestamps();
         });
     }
