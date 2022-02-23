@@ -9,7 +9,7 @@ ADD 000-default.conf /etc/apache2/sites-enabled/
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # ミドルウェアのインストール
-RUN apt-get update && apt-get install -y git \
+RUN apt-get update && apt-get install -y git vim \
     && docker-php-ext-install pdo_mysql
     
 # エラーが出てしまったapacheの設定
