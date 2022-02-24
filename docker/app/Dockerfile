@@ -1,16 +1,19 @@
 # https://laraweb.net/environment/8652/
 # https://www.engilaboo.com/laravel-docker/#rtoc-2
+# php8.0 apache2.4.52
 FROM php:8.0-apache
-
-# apacheの設定
-ADD 000-default.conf /etc/apache2/sites-enabled/
 
 # composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Node.jsをインストール
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt-get install -y nodejs
+
 # ミドルウェアのインストール
 RUN apt-get update && apt-get install -y git vim \
     && docker-php-ext-install pdo_mysql
-    
-# エラーが出てしまったapacheの設定
-# RUN sed -i 's!/var/www/html!/var/www/app/public!g' /etc/apache2sites-available/000-default.conf
+
+# apacheの設定
+ADD 000-default.conf /etc/apache2/sites-enabled/
+RUN a2enmod rewrite && service apache2 restart
