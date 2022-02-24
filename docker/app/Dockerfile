@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y git vim \
     && docker-php-ext-install pdo_mysql
 
 # Node.jsをインストール
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
-RUN apt-get install -y nodejs npm
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs
 
 # apacheの設定
 ADD 000-default.conf /etc/apache2/sites-enabled/
