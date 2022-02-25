@@ -6,6 +6,7 @@ FROM php:8.0-apache
 # composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+
 # ミドルウェアのインストール
 RUN apt-get update && apt-get install -y git vim \
     && docker-php-ext-install pdo_mysql
