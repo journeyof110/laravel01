@@ -10,7 +10,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="card card-default">
-    {!! Form::open() !!}
+    {!! Form::open($openForm) !!}
     <div class="card-header">
       <h3 class="card-title">{{$type}}</h3>
     </div>
@@ -91,8 +91,8 @@
       </div>
     </div>
     <div class="card-footer">
-      {!! Form::submit('作成する', ['class' => 'btn btn-primary']) !!}
-      <a href="{{route('time_card')}}" class="btn btn-secondary">戻る</a>
+      {!! Form::submit('更新する', ['class' => 'btn btn-primary']) !!}
+      <a href="{{route('time_card.index')}}" class="btn btn-secondary">戻る</a>
     </div>
     {!! Form::close() !!}
 

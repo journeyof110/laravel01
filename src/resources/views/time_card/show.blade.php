@@ -14,7 +14,7 @@
       <h3 class="card-title p-3">詳細</h3>
       <ul class="nav nav-pills ml-auto p-2">
         <li class="nav-item">
-          <a class="btn btn-block btn-default" href="{{route('time_card.edit', ['timeCard' => $timeCard->id])}}">
+          <a class="btn btn-block btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}">
             <i class="fas fa-edit"></i>
             編集
           </a>
@@ -56,7 +56,7 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="{{route('time_card')}}" class="btn btn-secondary">戻る</a>
+      <a href="{{route('time_card.index')}}" class="btn btn-secondary">戻る</a>
     </div>
   </div>
 </div>

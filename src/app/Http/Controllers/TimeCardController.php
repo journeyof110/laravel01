@@ -158,7 +158,7 @@ class TimeCardController extends Controller
             return $this->showError('タイムカード作成');
         }
 
-        return back()->with('success', 'タイムカードデータを作成しました。');
+        return to_route('time_card.show', ['time_card' => $timeCard])->with('success', 'タイムカードデータを作成しました。');
     }
 
     /**
@@ -180,7 +180,6 @@ class TimeCardController extends Controller
      */
     public function edit(Request $request, TimeCard $timeCard)
     {
-        $request->session()->flash('timeCard', $timeCard);
         return view('time_card.edit', ['timeCard' => $timeCard]);
     }
 
@@ -195,7 +194,7 @@ class TimeCardController extends Controller
     {
         Log::info("start update", ['request' => $request->all()]);
         try {
-            $inputs = $request->except('_token');
+            $inputs = $request->except('_token', '_method');
             foreach ($inputs as $key => $value) {
                 $timeCard->{$key} = $value;
             }
