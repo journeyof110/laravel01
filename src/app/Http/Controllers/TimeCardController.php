@@ -10,6 +10,7 @@ use App\Models\TimeCard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Log;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -23,12 +24,12 @@ class TimeCardController extends Controller
     public function index(Request $request)
     {
         Log::info('start index');
-        $latestTimeCard = TimeCard::latestDateTime()->first();
+        $latestTimeCard = TimeCard::auth()->latestDateTime()->first();
 
         $now = Carbon::now();
         $year = $request->get('year', $now->year);
         $month = $request->get('month', $now->month);
-        $timeCards = TimeCard::month($year, $month)->sortDateTime()->get();
+        $timeCards = TimeCard::auth()->month($year, $month)->sortDateTime()->get();
 
         return view('time_card.index', [
             'latestTimeCard' => $latestTimeCard,
@@ -53,6 +54,7 @@ class TimeCardController extends Controller
         try {
             $now = Carbon::now();
             $timeCard = new TimeCard();
+            $timeCard->user_id = Auth::id();
             $timeCard->date = $now->format('Y-m-d');
             $timeCard->start_time = $now->format('H:i:00');
             $timeCard->memo = $request->get('memo');
@@ -149,16 +151,16 @@ class TimeCardController extends Controller
         try {
             $timeCard = new TimeCard();
             $inputs = $request->except('_token');
-            foreach ($inputs as $key => $value) {
-                $timeCard->{$key} = $value;
-            }
+            $inputs['user_id'] = Auth::id();
+            $timeCard->fill($inputs);
             $timeCard->save();
         } catch (\Throwable $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
             return $this->showError('タイムカード作成');
         }
 
-        return to_route('time_card.show', ['time_card' => $timeCard])->with('success', 'タイムカードデータを作成しました。');
+        return to_route('time_card.show', ['time_card' => $timeCard])
+            ->with('success', 'タイムカードデータを作成しました。');
     }
 
     /**
@@ -195,16 +197,15 @@ class TimeCardController extends Controller
         Log::info("start update", ['request' => $request->all()]);
         try {
             $inputs = $request->except('_token', '_method');
-            foreach ($inputs as $key => $value) {
-                $timeCard->{$key} = $value;
-            }
+            $timeCard->fill($inputs);
             $timeCard->save();
         } catch (\Throwable $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
             return $this->showError('タイムカード更新');
         }
 
-        return back()->with('success', 'タイムカードデータを更新しました。');
+        return to_route('time_card.show', ['time_card' => $timeCard])
+            ->with('success', 'タイムカードデータを更新しました。');
     }
 
     /**

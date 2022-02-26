@@ -91,7 +91,7 @@
       </div>
     </div>
     <div class="card-footer">
-      {!! Form::submit('更新する', ['class' => 'btn btn-primary']) !!}
+      {!! Form::submit($buttonLabel, ['class' => 'btn btn-primary']) !!}
       <a href="{{route('time_card.index')}}" class="btn btn-secondary">戻る</a>
     </div>
     {!! Form::close() !!}

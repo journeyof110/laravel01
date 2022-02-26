@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class TimeCard extends Model
 {
@@ -14,8 +15,14 @@ class TimeCard extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
+        'user_id',
+        'year',
+        'month',
+        'day',
         'start_time',
         'end_time',
+        'memo',
+        'date',
     ];
 
     /**
@@ -110,6 +117,23 @@ class TimeCard extends Model
         $this->day = $date->day;
     }
 
+    /**
+     * ユーザーIDによる絞り込み
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeAuth($query): Builder
+    {
+        return $query->where('user_id', Auth::id());
+    }
+
+    /**
+     * 最新のタイムデータを取得
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeLatestDateTime($query): Builder
     {
         return $query->latest('year')

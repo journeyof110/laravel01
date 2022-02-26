@@ -4,5 +4,6 @@
   'openForm' => [
     'method' => 'put',
     'route' => ['time_card.update', $timeCard->id ?? null]
-    ]
+  ],
+  'buttonLabel' => '更新する',
 ])
