@@ -43,19 +43,24 @@
               </div>
               <div class="card-body">
                 {!! Form::open() !!}
-                  <div class="row">
-                    <div class="col-sm-3">
-                      {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
-                      <h5>{{$startTime}}</h5>
-                    </div>
-                    <div class="col-sm-3">
-                      {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
-                    </div>
-                    <div class="col-sm-6">
-                      {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
-                    </div>
+                <div class="row">
+                  <div class="col-sm-1">
+                    {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
                   </div>
+                  <div class="col-sm-1">
+                    {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
+                  </div>
+                  <div class="col-sm-3">
+                    {!! Form::select('cateogry_id', $categories, $latestTimeCard, ['class' => 'custom-select']) !!}
+                  </div>
+                  <div class="col-sm-7">
+                    {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
+                  </div>
+                </div>
                 {!! Form::close() !!}
+              </div>
+              <div class="card-footer">
+                <h5>{{$startTime}}</h5>
               </div>
             </div>
             <div class="card">
@@ -87,7 +92,7 @@
                         <td>{{$timeCard->dayAndDayName}}</td>
                         <td>{{$timeCard->start_time}}</td>
                         <td>{{$timeCard->end_time}}</td>
-                        <td>{{$timeCard->categury_id}}</td>
+                        <td>{{$timeCard->category->name}}</td>
                         <td class="col-sm-2 text-center ">
                           <a class="btn btn-default" href="{{route('time_card.show', ['time_card' => $timeCard->id])}}" >
                             <i class="fas fa-file-alt"></i>

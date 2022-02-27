@@ -48,6 +48,14 @@
       </div>
       <div class="form-group row">
         <div class="col-md-2">
+          <label>カテゴリー</label>
+        </div>
+        <div class="col-md-10 input-group date">
+          {{$timeCard->category->name}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
           <label>メモ</label>
         </div>
         <div class="col-md-10 input-group date">

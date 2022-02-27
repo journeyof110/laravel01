@@ -16,6 +16,7 @@ class TimeCard extends Model
 
     protected $fillable = [
         'user_id',
+        'category_id',
         'year',
         'month',
         'day',
@@ -24,6 +25,16 @@ class TimeCard extends Model
         'memo',
         'date',
     ];
+
+    /**
+     * タイムデータが含まれているカテゴリーの取得
+     *
+     * @return void
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     /**
      * 開始時刻の表示を修正

@@ -77,6 +77,21 @@
       </div>
       <div class="form-group row">
         <div class="col-md-2">
+          <label>カテゴリー</label>
+        </div>
+        <div class="col-md-10 input-group date">
+          {!! Form::select('category_id',
+            $categories,
+            old('category_id', $timeCard->category->id ?? ''),
+            ['class' => 'form-control ' . (!$errors->has('category_id') ?: 'is-invalid')]
+          ) !!}
+          <span class="error invalid-feedback">
+            @error('category_id') {{$message}} @enderror
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
           <label>メモ</label>
         </div>
         <div class="col-md-10 input-group date">

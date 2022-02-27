@@ -7,6 +7,7 @@ use App\Http\Requests\TimeCard\StartTimeCardRequest;
 use App\Http\Requests\TimeCard\StoreTimeCardRequest;
 use App\Http\Requests\TimeCard\UpdateTimeCardRequest;
 use App\Models\TimeCard;
+use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -30,10 +31,12 @@ class TimeCardController extends Controller
         $year = $request->get('year', $now->year);
         $month = $request->get('month', $now->month);
         $timeCards = TimeCard::auth()->month($year, $month)->sortDateTime()->get();
+        $categories = Category::all()->pluck('name', 'id');
 
         return view('time_card.index', [
             'latestTimeCard' => $latestTimeCard,
             'timeCards' => $timeCards,
+            'categories' => $categories,
         ]);
     }
 
@@ -57,6 +60,7 @@ class TimeCardController extends Controller
             $timeCard->user_id = Auth::id();
             $timeCard->date = $now->format('Y-m-d');
             $timeCard->start_time = $now->format('H:i:00');
+            $timeCard->category_id = $request->get('category_id');
             $timeCard->memo = $request->get('memo');
             $timeCard->save();
         } catch (\Throwable $th) {
@@ -86,6 +90,7 @@ class TimeCardController extends Controller
             // 開始と終了の日付が異なる場合、レコードを分ける
             $now = Carbon::now();
             $timeCard->memo = $request->get('memo');
+            $timeCard->category_id = $request->get('category_id');
             if ($timeCard->day !== $now->day) {
                 $timeCard->end_time = '23:59:59';
                 $timeCard->save();
@@ -136,7 +141,8 @@ class TimeCardController extends Controller
     public function create()
     {
         Log::info("start create");
-        return view('time_card.create');
+        $categories = Category::all()->pluck('name', 'id');
+        return view('time_card.create', ['categories' => $categories]);
     }
 
     /**
@@ -182,7 +188,8 @@ class TimeCardController extends Controller
      */
     public function edit(Request $request, TimeCard $timeCard)
     {
-        return view('time_card.edit', ['timeCard' => $timeCard]);
+        $categories = Category::all()->pluck('name', 'id');
+        return view('time_card.edit', ['timeCard' => $timeCard, 'categories' => $categories]);
     }
 
     /**
