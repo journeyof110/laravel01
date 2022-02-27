@@ -167,12 +167,12 @@ class TimeCard extends Model
         return $query->where('year', $year)->where('month', $month);
     }
 
-    public function scopeSortDateTime($query)
+    public function scopeSortDescDateTime($query)
     {
-        return $query->orderBy('year')
-            ->orderBy('month')
-            ->orderBy('day')
-            ->orderBy('start_time');
+        return $query->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->orderBy('day', 'desc')
+            ->orderBy('start_time', 'desc');
     }
 
     public function scopeGroupByMonth($query)
