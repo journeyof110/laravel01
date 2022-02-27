@@ -68,7 +68,9 @@ class TimeCardController extends Controller
             return $this->showError('作業開始');
         }
 
-        return back()->with('success', $timeCard->start_datetime . ' 作業を開始しました。');
+        return back()
+            ->with('startId', $timeCard->id)
+            ->with('success', '作業を開始しました。');
     }
     
     /**
@@ -106,7 +108,9 @@ class TimeCardController extends Controller
             return $this->showError('作業終了');
         }
         
-        return back()->with('success', $timeCard->end_datetime . ' 作業を終了しました。');
+        return back()
+            ->with('endId', $timeCard->id)
+            ->with('success', '作業を終了しました。');
     }
 
     /**

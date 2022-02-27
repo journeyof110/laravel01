@@ -51,7 +51,7 @@
                     {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
                   </div>
                   <div class="col-sm-3">
-                    {!! Form::select('cateogry_id', $categories, $latestTimeCard, ['class' => 'custom-select']) !!}
+                    {!! Form::select('category_id', $categories, $latestTimeCard, ['class' => 'custom-select']) !!}
                   </div>
                   <div class="col-sm-7">
                     {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
@@ -88,8 +88,8 @@
                   </thead>
                   <tbody>
                     @foreach ($timeCards as $timeCard)
-                      <tr>
-                        <td>{{$timeCard->dayAndDayName}}</td>
+                      <tr class="{{((session('endId') ?? '') == $timeCard->id) ? 'bg-maroon' : (((session('startId') ?? '') == $timeCard->id) ? 'bg-lightblue' : '')}}">
+                        <td>{{$timeCard->dayAndDayName . ($endId ?? '') . ($startId ?? '') }}</td>
                         <td>{{$timeCard->start_time}}</td>
                         <td>{{$timeCard->end_time}}</td>
                         <td>{{$timeCard->category->name}}</td>
