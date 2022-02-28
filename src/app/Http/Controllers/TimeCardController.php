@@ -54,9 +54,7 @@ class TimeCardController extends Controller
         }
 
         try {
-            $now = Carbon::now();
             $timeCard = new TimeCard();
-            $timeCard->date = $now->format('Y-m-d');
             $timeCard->category_id = $request->get('category_id');
             $timeCard->memo = $request->get('memo');
             $timeCard->save();
@@ -90,15 +88,15 @@ class TimeCardController extends Controller
             $now = Carbon::now();
             $timeCard->memo = $request->get('memo');
             $timeCard->category_id = $request->get('category_id');
-            if ($timeCard->day !== $now->day) {
-                $timeCard->end_time = '23:59:59';
+            if ($timeCard->date !== $now->date) {
+                $timeCard->end_time = '23:59';
                 $timeCard->save();
 
                 $timeCard = $timeCard->replicate();
-                $timeCard->date = $now->format('Y-m-d');
-                $timeCard->start_time = '00:00:00';
+                $timeCard->date = $now;
+                $timeCard->start_time = '00:00';
             }
-            $timeCard->end_time = $now->format('H:i:00');
+            $timeCard->end_time = $now->format('H:i');
             $timeCard->save();
         } catch (\Throwable $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
