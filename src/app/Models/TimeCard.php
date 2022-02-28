@@ -12,6 +12,7 @@ class TimeCard extends Model
 {
     use SoftDeletes;
 
+
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
@@ -25,6 +26,12 @@ class TimeCard extends Model
         'memo',
         'date',
     ];
+
+    public function __construct()
+    {
+        $this->user_id = Auth::id();
+    }
+
 
     /**
      * タイムデータが含まれているカテゴリーの取得

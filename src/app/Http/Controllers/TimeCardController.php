@@ -57,7 +57,6 @@ class TimeCardController extends Controller
         try {
             $now = Carbon::now();
             $timeCard = new TimeCard();
-            $timeCard->user_id = Auth::id();
             $timeCard->date = $now->format('Y-m-d');
             $timeCard->start_time = $now->format('H:i:00');
             $timeCard->category_id = $request->get('category_id');
@@ -161,7 +160,6 @@ class TimeCardController extends Controller
         try {
             $timeCard = new TimeCard();
             $inputs = $request->except('_token');
-            $inputs['user_id'] = Auth::id();
             $timeCard->fill($inputs);
             $timeCard->save();
         } catch (\Throwable $th) {
