@@ -11,7 +11,6 @@ use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 use Log;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -58,7 +57,6 @@ class TimeCardController extends Controller
             $now = Carbon::now();
             $timeCard = new TimeCard();
             $timeCard->date = $now->format('Y-m-d');
-            $timeCard->start_time = $now->format('H:i:00');
             $timeCard->category_id = $request->get('category_id');
             $timeCard->memo = $request->get('memo');
             $timeCard->save();

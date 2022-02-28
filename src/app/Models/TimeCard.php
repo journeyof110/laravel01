@@ -12,8 +12,11 @@ class TimeCard extends Model
 {
     use SoftDeletes;
 
-
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'start_time:H-i',
+        'end_time:H-i',
+        'deleted_at:Y-m-d H:i:s'
+    ];
 
     protected $fillable = [
         'user_id',
@@ -30,6 +33,7 @@ class TimeCard extends Model
     public function __construct()
     {
         $this->user_id = Auth::id();
+        $this->start_time = Carbon::now();
     }
 
 
