@@ -6,17 +6,44 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class TimeCard extends Model
 {
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'date:Y-m-d',
+        'start_time:H-i',
+        'end_time:H-i',
+        'deleted_at:Y-m-d H:i:s'
+    ];
 
     protected $fillable = [
+        'user_id',
+        'category_id',
+        'date',
         'start_time',
         'end_time',
+        'memo',
     ];
+
+    public function __construct()
+    {
+        $this->user_id = Auth::id();
+        $this->date = Carbon::now();
+        $this->start_time = Carbon::now();
+    }
+
+    /**
+     * タイムデータが含まれているカテゴリーの取得
+     *
+     * @return void
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     /**
      * 開始時刻の表示を修正
@@ -47,16 +74,6 @@ class TimeCard extends Model
     }
 
     /**
-     * 年月日を表示用に修正
-     *
-     * @return string
-     */
-    public function getDateAttribute() : string
-    {
-        return implode('-', $this->only('year', 'month', 'day'));
-    }
-
-    /**
      * 開始日時を取得
      *
      * @return string
@@ -67,7 +84,7 @@ class TimeCard extends Model
             return null;
         }
 
-        return Carbon::createMidnightDate($this->year, $this->month, $this->day)
+        return Carbon::parse($this->date)
             ->createFromTimeString($this->start_time)
             ->format('Y年m月d日 H時i分');
     }
@@ -79,12 +96,11 @@ class TimeCard extends Model
      */
     public function getDayAndDayNameAttribute(): string
     {
-        if (!isset($this->day)) {
+        if (!isset($this->date)) {
             return '';
         }
         Carbon::setLocale('ja');
-        $day = Carbon::createMidnightDate($this->year, $this->month, $this->day);
-        return $day->isoFormat('D日 (ddd)');
+        return Carbon::parse($this->date)->isoFormat('D日 (ddd)');
     }
 
     /**
@@ -98,23 +114,25 @@ class TimeCard extends Model
     }
 
     /**
-     * 日時を設定
+     * ユーザーIDによる絞り込み
      *
-     * @param string $date
+     * @param Builder $query
+     * @return Builder
      */
-    public function setDateAttribute(string $date)
+    public function scopeAuth($query): Builder
     {
-        $date = Carbon::parse($date);
-        $this->year = $date->year;
-        $this->month = $date->month;
-        $this->day = $date->day;
+        return $query->where('user_id', Auth::id());
     }
 
+    /**
+     * 最新のタイムデータを取得
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeLatestDateTime($query): Builder
     {
-        return $query->latest('year')
-            ->latest('month')
-            ->latest('day')
+        return $query->latest('date')
             ->latest('start_time')
             ->whereNull('end_time');
     }
@@ -129,15 +147,13 @@ class TimeCard extends Model
      */
     public function scopeMonth($query, int $year, int $month): Builder
     {
-        return $query->where('year', $year)->where('month', $month);
+        return $query->whereYear('date', $year)->whereMonth('date', $month);
     }
 
-    public function scopeSortDateTime($query)
+    public function scopeSortDescDateTime($query)
     {
-        return $query->orderBy('year')
-            ->orderBy('month')
-            ->orderBy('day')
-            ->orderBy('start_time');
+        return $query->orderBy('date', 'desc')
+            ->orderBy('start_time', 'desc');
     }
 
     public function scopeGroupByMonth($query)

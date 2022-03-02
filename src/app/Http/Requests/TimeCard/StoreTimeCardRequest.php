@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\TimeCard;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTimeCardRequest extends FormRequest
@@ -27,6 +28,7 @@ class StoreTimeCardRequest extends FormRequest
             'date'          => 'required|date_format:Y-m-d',
             'start_time'    => 'required|date_format:H:i',
             'end_time'      => 'nullable|date_format:H:i',
+            'category_id'   => 'required|in:' . Category::all()->implode('id', ','),
             'memo'          => 'required|string|max:255',
         ];
     }
@@ -35,9 +37,10 @@ class StoreTimeCardRequest extends FormRequest
     {
         return [
             'date' => '年月日',
-            'start_time' => '開始時間',
-            'end_time'   => '終了時間',
-            'memo' => 'メモ',
+            'start_time'    => '開始時間',
+            'end_time'      => '終了時間',
+            'category_id'   => 'カテゴリー',
+            'memo'          => 'メモ',
         ];
     }
 }

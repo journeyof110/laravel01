@@ -10,7 +10,7 @@
     'type' => 'submit',
     'class' => 'btn btn-app bg-maroon',
     'name' => 'hasClieckedEnd',
-    'formaction' => route('time_card.end', ['timeCard' => optional($latestTimeCard)->id]),
+    'formaction' => route('time_card.end', ['time_card' => optional($latestTimeCard)->id]),
     'value' => true,
   ];
 
@@ -43,19 +43,24 @@
               </div>
               <div class="card-body">
                 {!! Form::open() !!}
-                  <div class="row">
-                    <div class="col-sm-3">
-                      {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
-                      <h5>{{$startTime}}</h5>
-                    </div>
-                    <div class="col-sm-3">
-                      {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
-                    </div>
-                    <div class="col-sm-6">
-                      {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
-                    </div>
+                <div class="row">
+                  <div class="col-sm-1">
+                    {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
                   </div>
+                  <div class="col-sm-1">
+                    {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
+                  </div>
+                  <div class="col-sm-3">
+                    {!! Form::select('category_id', $categories, $latestTimeCard, ['class' => 'custom-select']) !!}
+                  </div>
+                  <div class="col-sm-7">
+                    {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
+                  </div>
+                </div>
                 {!! Form::close() !!}
+              </div>
+              <div class="card-footer">
+                <h5>{{$startTime}}</h5>
               </div>
             </div>
             <div class="card">
@@ -83,19 +88,19 @@
                   </thead>
                   <tbody>
                     @foreach ($timeCards as $timeCard)
-                      <tr>
-                        <td>{{$timeCard->dayAndDayName}}</td>
+                      <tr class="{{((session('endId') ?? '') == $timeCard->id) ? 'bg-maroon' : (((session('startId') ?? '') == $timeCard->id) ? 'bg-lightblue' : '')}}">
+                        <td>{{$timeCard->dayAndDayName . ($endId ?? '') . ($startId ?? '') }}</td>
                         <td>{{$timeCard->start_time}}</td>
                         <td>{{$timeCard->end_time}}</td>
-                        <td>{{$timeCard->categury_id}}</td>
+                        <td>{{$timeCard->category->name}}</td>
                         <td class="col-sm-2 text-center ">
-                          <a class="btn btn-default" href="{{route('time_card.show', ['timeCard' => $timeCard->id])}}" >
+                          <a class="btn btn-default" href="{{route('time_card.show', ['time_card' => $timeCard->id])}}" >
                             <i class="fas fa-file-alt"></i>
                           </a>
-                          <a class="btn btn-default" href="{{route('time_card.edit', ['timeCard' => $timeCard->id])}}">
+                          <a class="btn btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}">
                             <i class="fas fa-edit"></i>
                           </a>
-                          <button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->dayAndTime}}' data-link="{{route('time_card.destroy', ['timeCard' => $timeCard->id])}}">
+                          <button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->dayAndTime}}' data-link="{{route('time_card.destroy', ['time_card' => $timeCard->id])}}">
                             <i class="fas fa-trash"></i>
                           </button>
                         </td>
@@ -125,7 +130,9 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-            <a href="" class="btn btn-primary">削除する</a>
+            {{ Form::open(['method' => 'delete']) }}
+              {!! Form::submit('削除する', ['class' => 'btn btn-primary']) !!}
+            {{ Form::close() }}
           </div>
         </div>
       </div>
@@ -139,7 +146,7 @@
       var dayTime = $(this).data('daytime');
       var link = $(this).data('link');
       $('#modal-timecard-day').html(dayTime);
-      $('.modal-footer a').attr('href', link);
+      $('.modal-footer form').attr('action', link);
     });
   </script>
 @stop

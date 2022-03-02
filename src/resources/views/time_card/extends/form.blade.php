@@ -10,7 +10,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="card card-default">
-    {!! Form::open() !!}
+    {!! Form::open($openForm) !!}
     <div class="card-header">
       <h3 class="card-title">{{$type}}</h3>
     </div>
@@ -77,6 +77,21 @@
       </div>
       <div class="form-group row">
         <div class="col-md-2">
+          <label>カテゴリー</label>
+        </div>
+        <div class="col-md-10 input-group date">
+          {!! Form::select('category_id',
+            $categories,
+            old('category_id', $timeCard->category->id ?? ''),
+            ['class' => 'form-control ' . (!$errors->has('category_id') ?: 'is-invalid')]
+          ) !!}
+          <span class="error invalid-feedback">
+            @error('category_id') {{$message}} @enderror
+          </span>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
           <label>メモ</label>
         </div>
         <div class="col-md-10 input-group date">
@@ -91,8 +106,8 @@
       </div>
     </div>
     <div class="card-footer">
-      {!! Form::submit('作成する', ['class' => 'btn btn-primary']) !!}
-      <a href="{{route('time_card')}}" class="btn btn-secondary">戻る</a>
+      {!! Form::submit($buttonLabel, ['class' => 'btn btn-primary']) !!}
+      <a href="{{route('time_card.index')}}" class="btn btn-secondary">戻る</a>
     </div>
     {!! Form::close() !!}
 
