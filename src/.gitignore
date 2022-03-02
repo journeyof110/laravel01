@@ -5,6 +5,7 @@
 /resources/lang
 /resources/views/vendor
 /storage/*.key
+/storage/debugbar
 /vendor
 .env
 .env.backup
