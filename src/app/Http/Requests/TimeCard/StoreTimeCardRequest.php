@@ -29,7 +29,7 @@ class StoreTimeCardRequest extends FormRequest
             'start_time'    => 'required|date_format:H:i',
             'end_time'      => 'nullable|date_format:H:i',
             'category_id'   => 'required|in:' . Category::all()->implode('id', ','),
-            'memo'          => 'required|string|max:255',
+            'memo'          => 'nullable|string|max:255',
         ];
     }
 
