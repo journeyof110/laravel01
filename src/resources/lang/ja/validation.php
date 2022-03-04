@@ -155,6 +155,7 @@ return [
 
     'attributes' => [
         'date' => '年月日',
+        'category_id' => 'カテゴリー',
         'start_time' => '開始時刻',
         'end_time' => '終了時刻',
         'memo' => 'メモ',

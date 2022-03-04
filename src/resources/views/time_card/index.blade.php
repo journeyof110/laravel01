@@ -14,6 +14,16 @@
     'value' => true,
   ];
 
+  $categoryIdOptions = [
+    'class' => 'custom-select '. (!$errors->has('category_id') ? '' : 'is-invalid'),
+  ];
+
+  $memoOptions = [
+    'class' => 'form-control ' . (!$errors->has('memo') ? '' : 'is-invalid'),
+    'rows' => 3,
+    'placeholder' => 'メモ'
+  ];
+
   if (isset($latestTimeCard->id) && is_null($latestTimeCard->end_time)) {
     $startOptions['disabled'] = 'disabled';
     $startOptions['value'] = false;
@@ -51,10 +61,16 @@
                     {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
                   </div>
                   <div class="col-sm-3">
-                    {!! Form::select('category_id', $categories, $latestTimeCard, ['class' => 'custom-select']) !!}
+                    {!! Form::select('category_id', $categories, $latestTimeCard, $categoryIdOptions) !!}
+                    <span class="error invalid-feedback">
+                      @error('category_id') {{$message}} @enderror
+                    </span>
                   </div>
                   <div class="col-sm-7">
-                    {!! Form::textarea('memo', $latestTimeCard->memo ?? '', ['class' => 'form-control', 'rows' => 3, 'placeholder' => 'メモ']) !!}
+                    {!! Form::textarea('memo', $latestTimeCard->memo ?? '', $memoOptions) !!}
+                    <span class="error invalid-feedback">
+                      @error('category_id') {{$message}} @enderror
+                    </span>
                   </div>
                 </div>
                 {!! Form::close() !!}
