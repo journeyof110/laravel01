@@ -26,4 +26,5 @@ RUN mkdir -p /var/www/app/public \
     && a2enmod rewrite \
     && a2dissite 000-default.conf \
     && a2ensite laravel \
+    && a2ensite schemaspy \
     && service apache2 restart
