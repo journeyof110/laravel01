@@ -34,11 +34,9 @@ services:
       - ./docker/phpmyadmin/sessions:/sessions
 
   schemaspy:
-    image: schemaspy/schemaspy
+    build: ./docker/schemaspy
     depends_on:
       - db
     volumes:
       - ./docker/schemaspy/output:/output
-      - ./docker/schemaspy/config:/config
-      - ./docker/schemaspy/drivers:/drivers
     command: [ "-configFile", "/config/schemaspy.properties" ]
