@@ -2,3 +2,5 @@
 /docker/db/data.old
 /docker/db/.env
 /docker/phpmyadmin/.env
+/docker/schemaspy/config
+/docker/schemaspy/output

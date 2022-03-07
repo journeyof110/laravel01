@@ -4,6 +4,7 @@ services:
     build: ./docker/app
     ports:
       - 80:80
+      - 8080:8080
     volumes:
       - ./src:/var/www/app
       - ./docker/schemaspy/output:/var/www/html
@@ -31,3 +32,11 @@ services:
       - db
     volumes:
       - ./docker/phpmyadmin/sessions:/sessions
+
+  schemaspy:
+    build: ./docker/schemaspy
+    depends_on:
+      - db
+    volumes:
+      - ./docker/schemaspy/output:/output
+    command: [ "-configFile", "/config/schemaspy.properties" ]
