@@ -88,7 +88,7 @@ class TimeCardController extends Controller
             $now = Carbon::now();
             $timeCard->memo = $request->get('memo');
             $timeCard->category_id = $request->get('category_id');
-            if ($timeCard->day !== $now->day) {
+            if ($timeCard->date !== $now->format('Y-m-d')) {
                 $timeCard->end_time = '23:59';
                 $timeCard->save();
 
