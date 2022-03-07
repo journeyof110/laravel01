@@ -61,7 +61,7 @@
                     {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
                   </div>
                   <div class="col-sm-3">
-                    {!! Form::select('category_id', $categories, $latestTimeCard->category_id, $categoryIdOptions) !!}
+                    {!! Form::select('category_id', $categories, optional($latestTimeCard)->category_id, $categoryIdOptions) !!}
                     <span class="error invalid-feedback">
                       @error('category_id') {{$message}} @enderror
                     </span>
