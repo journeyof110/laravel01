@@ -23,8 +23,6 @@ class EndTimeCardRequest extends StoreTimeCardRequest
      */
     public function rules()
     {
-        return [
-            Arr::only(parent::rules(), 'memo'),
-        ];
+        return Arr::only(parent::rules(), ['category_id', 'memo']);
     }
 }

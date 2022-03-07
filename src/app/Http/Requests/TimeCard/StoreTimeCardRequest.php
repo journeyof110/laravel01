@@ -28,19 +28,8 @@ class StoreTimeCardRequest extends FormRequest
             'date'          => 'required|date_format:Y-m-d',
             'start_time'    => 'required|date_format:H:i',
             'end_time'      => 'nullable|date_format:H:i',
-            'category_id'   => 'required|in:' . Category::all()->implode('id', ','),
-            'memo'          => 'required|string|max:255',
-        ];
-    }
-
-    public function attribute()
-    {
-        return [
-            'date' => '年月日',
-            'start_time'    => '開始時間',
-            'end_time'      => '終了時間',
-            'category_id'   => 'カテゴリー',
-            'memo'          => 'メモ',
+            'category_id'   => 'required|exists:categories,id',
+            'memo'          => 'nullable|string|max:255',
         ];
     }
 }
