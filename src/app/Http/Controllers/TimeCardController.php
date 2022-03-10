@@ -11,7 +11,7 @@ use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Log;
+use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
 
 class TimeCardController extends Controller
@@ -29,7 +29,7 @@ class TimeCardController extends Controller
         $now = Carbon::now();
         $year = $request->get('year', $now->year);
         $month = $request->get('month', $now->month);
-        $timeCards = TimeCard::auth()->month($year, $month)->sortDescDateTime()->get();
+        $timeCards = TimeCard::auth()->month($year, $month)->sortDescDateTime()->with('category')->get();
         $categories = Category::all()->pluck('name', 'id');
 
         return view('time_card.index', [
