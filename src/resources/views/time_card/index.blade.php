@@ -27,11 +27,11 @@
   if (isset($latestTimeCard->id) && is_null($latestTimeCard->end_time)) {
     $startOptions['disabled'] = 'disabled';
     $startOptions['value'] = false;
-    $startTime = $latestTimeCard->start_datetime;
+    // $startTime = $latestTimeCard->start_datetime;
   } else {
     $endOptions['disabled'] = 'disabled';
     $endOptions['value'] = false;
-    $startTime = null;
+    // $startTime = null;
   }
 @endphp
 
@@ -76,7 +76,7 @@
                 {!! Form::close() !!}
               </div>
               <div class="card-footer">
-                <h5>{{$startTime}}</h5>
+                <h5>{{optional($latestTimeCard)->date_and_start_time_format}}</h5>
               </div>
             </div>
             <div class="card">
@@ -105,7 +105,7 @@
                   <tbody>
                     @foreach ($timeCards as $timeCard)
                       <tr class="{{((session('endId') ?? '') == $timeCard->id) ? 'bg-maroon' : (((session('startId') ?? '') == $timeCard->id) ? 'bg-lightblue' : '')}}">
-                        <td>{{$timeCard->dayAndDayName . ($endId ?? '') . ($startId ?? '') }}</td>
+                        <td>{{$timeCard->day_and_day_name_format . ($endId ?? '') . ($startId ?? '') }}</td>
                         <td>{{$timeCard->start_time}}</td>
                         <td>{{$timeCard->end_time}}</td>
                         <td>{{$timeCard->category->name}}</td>
@@ -116,7 +116,7 @@
                           <a class="btn btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}">
                             <i class="fas fa-edit"></i>
                           </a>
-                          <button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->dayAndTime}}' data-link="{{route('time_card.destroy', ['time_card' => $timeCard->id])}}">
+                          <button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->date_and_time_format}}' data-link="{{route('time_card.destroy', ['time_card' => $timeCard->id])}}">
                             <i class="fas fa-trash"></i>
                           </button>
                         </td>

@@ -27,7 +27,7 @@
           <label>年月日</label>
         </div>
         <div class="col-md-3 input-group date" id="datetimepicker" data-target-input="nearest">
-          {{$timeCard->date}}
+          {{$timeCard->date_format}}
         </div>
       </div>
       <div class="form-group row">
@@ -35,7 +35,7 @@
           <label>開始時刻</label>
         </div>
         <div class="col-md-3 input-group date input-time">
-          {{$timeCard->start_time}}
+          {{$timeCard->start_time_format}}
         </div>
       </div>
       <div class="form-group row">
@@ -43,7 +43,7 @@
           <label>終了時刻</label>
         </div>
         <div class="col-md-3 input-group date input-time">
-          {{$timeCard->end_time}}
+          {{$timeCard->end_time_format}}
         </div>
       </div>
       <div class="form-group row">

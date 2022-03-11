@@ -4,19 +4,21 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\Card;
 
 class TimeCard extends Model
 {
     use SoftDeletes;
 
     protected $casts = [
-        'date:Y-m-d',
-        'start_time:H-i',
-        'end_time:H-i',
-        'deleted_at:Y-m-d H:i:s'
+        'date' => 'date:Y-m-d',
+        'start_time' => 'datetime:H-i',
+        'end_time' => 'datetime:H-i',
+        'deleted_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     protected $fillable = [
@@ -30,9 +32,114 @@ class TimeCard extends Model
 
     public function __construct()
     {
+        Carbon::setLocale('ja');
         $this->user_id = Auth::id();
         $this->date = Carbon::now();
         $this->start_time = Carbon::now();
+    }
+
+    /**
+     * 開始時刻を取得
+     *
+     * @return Attribute
+     */
+    public function startTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => is_null($value) ? null : Carbon::parse($value)->format('H:i'),
+        );
+    }
+
+    /**
+     * 終了時刻を取得
+     *
+     * @return Attribute
+     */
+    public function endTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => is_null($value) ? null :Carbon::parse($value)->format('H:i'),
+        );
+    }
+
+    
+    /**
+     * 日にちと曜日を取得　'D日 (ddd)'
+     *
+     * @return Attribute
+     */
+    public function dayAndDayNameFormat(): Attribute
+    {
+        return  Attribute::make(
+            get: fn () => Carbon::parse($this->date)->isoFormat('D日 (ddd)'),
+        );
+    }
+
+    /**
+     * 日付と曜日を取得 'Y年M月D日(ddd)'
+     *
+     * @return Attribute
+     */
+    public function dateFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->date)
+                ->isoFormat('Y年M月D日(ddd)')
+        );
+    }
+
+    /**
+     * 開始時刻を取得 'H時m分'
+     *
+     * @return Attribute
+     */
+    public function startTimeFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::createFromTimeString($this->start_time)
+                    ->format('H時m分')
+        );
+    }
+
+    public function endTimeFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::createFromTimeString($this->end_time)
+                    ->format('H時m分')
+        );
+    }
+
+    /**
+     * 開始日時を取得 'Y年M月D日(ddd) H時mm分'
+     *
+     * @return Attribute
+     */
+    public function dateAndStartTimeFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => sprintf(
+                '【 開始 】%s %s',
+                $this->date_format,
+                $this->start_time_format
+            ),
+        );
+    }
+
+    /**
+     * 日にちと時刻を表示
+     *
+     * @return Attribute
+     */
+    public function dateAndTimeFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => sprintf(
+                '%s 【開始】%s  【終了】%s',
+                $this->date_format,
+                $this->start_time,
+                $this->end_time
+            ),
+        );
     }
 
     /**
@@ -43,74 +150,6 @@ class TimeCard extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    /**
-     * 開始時刻の表示を修正
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getStartTimeAttribute($value): string|null
-    {
-        if (is_null($value)) {
-            return null;
-        }
-        return Carbon::parse($value)->format('H:i');
-    }
-
-    /**
-     * 終了時刻の表示を修正
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getEndTimeAttribute($value): string|null
-    {
-        if (is_null($value)) {
-            return null;
-        }
-        return Carbon::parse($value)->format('H:i');
-    }
-
-    /**
-     * 開始日時を取得
-     *
-     * @return string
-     */
-    public function getStartDateTimeAttribute() : string
-    {
-        if (is_null($this->start_time)) {
-            return null;
-        }
-
-        return Carbon::parse($this->date)
-            ->createFromTimeString($this->start_time)
-            ->format('Y年m月d日 H時i分');
-    }
-
-    /**
-     * 日にちと曜日を取得　'D日 (ddd)'
-     *
-     * @return string
-     */
-    public function getDayAndDayNameAttribute(): string
-    {
-        if (!isset($this->date)) {
-            return '';
-        }
-        Carbon::setLocale('ja');
-        return Carbon::parse($this->date)->isoFormat('D日 (ddd)');
-    }
-
-    /**
-     * 日にちと時刻を表示
-     *
-     * @return string
-     */
-    public function getDayAndTimeAttribute(): string
-    {
-        return $this->dayAndDayName . ' ［開始］' . $this->start_time . ' ［終了］' . $this->end_time;
     }
 
     /**
