@@ -1,11 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'AdminLTE|タイムカードの詳細')
 
-@section('content_header')
-  @include('components.alert')
-  <h1 class="m-0 text-dark">タイムカードの詳細</h1>
-@stop
+@section('content_title', 'タイムカードの詳細')
 
 @section('content')
 <div class="container-fluid">

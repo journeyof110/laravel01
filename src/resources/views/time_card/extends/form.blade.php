@@ -1,11 +1,8 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
-@section('title', 'AdminLTE|タイムカードの' . $type)
+@section('title', 'AdminLTE|タイムカードの{{$type}}')
 
-@section('content_header')
-  @include('components.alert')
-  <h1 class="m-0 text-dark">タイムカードの{{$type}}</h1>
-@stop
+@section('content_title', 'タイムカードの{{$type}}')
 
 @section('content')
 <div class="container-fluid">
@@ -115,7 +112,7 @@
 </div>
 @endsection
 
-@push('css')
+@section('css-for-page')
 <style type="text/css">
   .input-time{
     position: relative;
@@ -132,9 +129,9 @@
     cursor: pointer;
   }
 </style>
-@endpush
+@stop
 
-@push('js')
+@section('js-for-page')
 <script type="text/javascript">
   $(function () {
     $('#datetimepicker').datetimepicker({
@@ -143,4 +140,4 @@
     });
   });
 </script>
-@endpush
+@stop

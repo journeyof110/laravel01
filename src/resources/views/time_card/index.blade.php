@@ -35,14 +35,11 @@
   }
 @endphp
 
-@extends('adminlte::page')
+@extends('layouts.app')
 
 @section('title', 'AdminLTE|タイムカード')
 
-@section('content_header')
-  @include('components.alert')
-  <h1 class="m-0 text-dark">タイムカード</h1>
-@stop
+@section('content_title', 'タイムカード')
 
 @section('content')
     <div class="row">
@@ -155,7 +152,7 @@
     </div>
 @stop
 
-@section('adminlte_js')
+@section('js-for-page')
   <script>
     // モーダルにパラメータ渡し
     $('.btn-delete').on('click', function (event) {
