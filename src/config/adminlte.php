@@ -406,12 +406,17 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'asset' => true,
+                    'location' => 'vendor/sweetalert2/sweetalert2.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/sweetalert2/sweetalert2.min.css',
                 ],
             ],
         ],
@@ -431,12 +436,12 @@ return [
             ],
         ],
         'bootstrapSwitch' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => '/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.css',
+                    'location' => '/vendor/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css',
                 ],
                 [
                     'type' => 'js',
@@ -446,7 +451,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.js',
+                    'location' => '/vendor/bootstrap-switch/js/bootstrap-switch.min.js',
                 ],
             ],
         ],
