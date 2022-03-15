@@ -8,14 +8,21 @@ use App\Http\Requests\TimeCard\StoreTimeCardRequest;
 use App\Http\Requests\TimeCard\UpdateTimeCardRequest;
 use App\Models\TimeCard;
 use App\Models\Category;
+use App\Services\TimeCardService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
 
 class TimeCardController extends Controller
 {
+    public $timeCardService;
+
+    public function __construct(TimeCardService $timeCardService)
+    {
+        $this->timeCardService = $timeCardService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,13 +31,9 @@ class TimeCardController extends Controller
     public function index(Request $request)
     {
         Log::info('start index');
-        $latestTimeCard = TimeCard::auth()->latestDateTime()->first();
-
-        $now = Carbon::now();
-        $year = $request->get('year', $now->year);
-        $month = $request->get('month', $now->month);
-        $timeCards = TimeCard::auth()->month($year, $month)->sortDescDateTime()->with('category')->get();
-        $categories = Category::all()->pluck('name', 'id');
+        $latestTimeCard = $this->timeCardService->working();
+        $timeCards = $this->timeCardService->getPageList($request);
+        $categories = $this->timeCardService->getCategorySelectList();
 
         return view('time_card.index', [
             'latestTimeCard' => $latestTimeCard,
