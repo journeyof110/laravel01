@@ -31,7 +31,7 @@ class TimeCardRepository extends Repository
     public function getPageList(int $maxRow, array $oldests, array $withs): object
     {
         return TimeCard::forUser()
-            ->oldests($oldests)
+            ->latests($oldests)
             ->withs($withs)
             ->paginate($maxRow);
     }

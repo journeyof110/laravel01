@@ -36,7 +36,7 @@ class TimeCardService extends Service
         $latestTimeCard = $this->timeCardRepository
             ->findLatest($latests);
 
-        return $latestTimeCard->end_time !== null ? : $latestTimeCard;
+        return $latestTimeCard->end_time !== null ? null : $latestTimeCard;
     }
 
     /**
