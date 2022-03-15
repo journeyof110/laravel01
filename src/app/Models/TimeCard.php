@@ -158,47 +158,71 @@ class TimeCard extends Model
      * @param Builder $query
      * @return Builder
      */
-    public function scopeAuth($query): Builder
+    public function scopeForUser($query, bool $forUser = true): Builder
     {
-        return $query->where('user_id', Auth::id());
+        return (!$forUser) ? : $query->where('user_id', Auth::id());
     }
 
     /**
-     * 最新のタイムデータを取得
+     * 最新順に並び替え
      *
      * @param Builder $query
+     * @param array $columns
      * @return Builder
      */
-    public function scopeLatestDateTime($query): Builder
+    public function scopeLatests($query, array $columns)
     {
-        return $query->latest('date')
-            ->latest('start_time')
-            ->whereNull('end_time');
+        foreach ($columns as $column) {
+            $query = $query->latest($column);
+        }
+        return $query;
     }
 
     /**
-     * 月によりデータを絞り込む
+     * 最古順に並び替え
      *
      * @param Builder $query
-     * @param integer $year
-     * @param integer $month
+     * @param array $sorts
      * @return Builder
      */
-    public function scopeMonth($query, int $year, int $month): Builder
+    public function scopeOldests($query, array $columns)
     {
-        return $query->whereYear('date', $year)->whereMonth('date', $month);
+        foreach ($columns as $column) {
+            $query = $query->oldest($column);
+        }
+        return $query;
     }
 
-    public function scopeSortDescDateTime($query)
+    /**
+     * 子テーブルを設定
+     *
+     * @param Builder $query
+     * @param array $withs
+     * @return Builder
+     */
+    public function scopeWiths($query, array $withs)
     {
-        return $query->orderBy('date', 'desc')
-            ->orderBy('start_time', 'desc');
+        foreach ($withs as $with) {
+            $query = $query->with($with);
+        }
+        return $query;
     }
 
-    public function scopeGroupByMonth($query)
-    {
-        return $query->groupBy('year', 'month')->select('year', 'month');
-    }
+    // /**
+    //  * 月によりデータを絞り込む
+    //  *
+    //  * @param Builder $query
+    //  * @param integer $year
+    //  * @param integer $month
+    //  * @return Builder
+    //  */
+    // public function scopeMonth($query, int $year, int $month): Builder
+    // {
+    //     return $query->whereYear('date', $year)->whereMonth('date', $month);
+    // }
 
-
+    // public function scopeGroupByMonth($query)
+    // {
+    //     return $query->groupBy('year', 'month')->select('year', 'month');
+    // }
 }
