@@ -32,6 +32,7 @@ class TimeCard extends Model
 
     public function __construct()
     {
+        parent::__construct();
         Carbon::setLocale('ja');
         $this->user_id = Auth::id();
     }
