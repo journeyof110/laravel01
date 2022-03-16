@@ -87,7 +87,7 @@ class TimeCardController extends Controller
             if (!$request->get('hasClieckedEnd')) {
                 throw new Exception('終了ボタンはクリックされていません');
             }
-            $this->timeCardService->editEndTimeCard($inputs, $timeCard);
+            $timeCardId = $this->timeCardService->editEndTimeCard($inputs, $timeCard);
         } catch (Exception $th) {
             Log::error($th->getMessage());
             return $this->showError('作業終了');
@@ -95,7 +95,7 @@ class TimeCardController extends Controller
 
         return back()
             ->with([
-                'endId' => $timeCard->id,
+                'endId' => $timeCardId,
                 'success', '作業を終了しました。'
             ]);
     }

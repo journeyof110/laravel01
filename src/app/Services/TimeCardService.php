@@ -67,14 +67,21 @@ class TimeCardService extends Service
             ->pluck('name', 'id');
     }
 
-    public function addStartTimeCard(array $inputs)
+    /**
+     * 開始ボタンによりタイムカードデータを追加
+     *
+     * @param array $inputs
+     * @return integer
+     */
+    public function addStartTimeCard(array $inputs): int
     {
         try {
             $inputs['date'] = Carbon::now();
             $inputs['start_time'] = Carbon::now();
             $inputs['end_time'] = null;
-            return $this->timeCardRepository->addTimeCard($inputs)
-                ->only('id');
+            return $this->timeCardRepository
+                ->addTimeCard($inputs)
+                ->id;
         } catch (Exception $th) {
             Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
             Log::error($th->__toString());
@@ -82,7 +89,14 @@ class TimeCardService extends Service
         }
     }
 
-    public function editEndTimeCard(array $inputs, TimeCard $timeCard)
+    /**
+     * 終了ボタンによりタイムカードデータを更新
+     *
+     * @param array $inputs
+     * @param TimeCard $timeCard
+     * @return integer
+     */
+    public function editEndTimeCard(array $inputs, TimeCard $timeCard): int
     {
         $now = Carbon::now();
         try {
@@ -96,7 +110,9 @@ class TimeCardService extends Service
                 $inputs['start_time'] = '00:00';
             }
             $inputs['end_time'] = $now->format('H:i');
-            $timeCard = $this->timeCardRepository->editTimeCard($inputs, $timeCard);
+            return $this->timeCardRepository
+                ->editTimeCard($inputs, $timeCard)
+                ->id;
 
         } catch (Exception $th) {
             Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
