@@ -119,7 +119,7 @@
                         </td>
                       </tr>
                       @endforeach
-                      {{ $timeCards->links('pagination::bootstrap-4') }}
+                      {{-- {{ $timeCards->links('pagination::bootstrap-4') }} --}}
                   </tbody>
                 </table>
               </div>
