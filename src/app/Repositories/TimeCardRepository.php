@@ -7,6 +7,12 @@ use App\Repositories\Repository;
 
 class TimeCardRepository extends Repository
 {
+    /**
+     * タイムカードデータを追加
+     *
+     * @param array $inputs
+     * @return object
+     */
     public function addTimeCard(array $inputs): object
     {
         $timeCard = new TimeCard();
@@ -16,13 +22,19 @@ class TimeCardRepository extends Repository
         return $timeCard;
     }
 
+    /**
+     * タイムカードデータを更新
+     *
+     * @param array $inputs
+     * @param TimeCard $timeCard
+     * @return object
+     */
     public function editTimeCard(array $inputs, TimeCard $timeCard): object
     {
         $timeCard->fill($inputs);
         $timeCard->save();
         return $timeCard;
     }
-
 
     /**
      * 最新のタイムカードデータを取得
