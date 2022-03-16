@@ -10,6 +10,7 @@ use App\Models\TimeCard;
 use App\Models\Category;
 use App\Services\TimeCardService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
@@ -50,25 +51,24 @@ class TimeCardController extends Controller
      */
     public function start(StartTimeCardRequest $request)
     {
-        Log::info("start start", $request->all());
-
-        if ($request->get('hasClieckedStart') != 1) {
-            return $this->showError('作業開始');
-        }
+        $inputs = $request->except('_token');
+        Log::info("start start", $inputs);
 
         try {
-            $timeCard = new TimeCard();
-            $timeCard->category_id = $request->get('category_id');
-            $timeCard->memo = $request->get('memo');
-            $timeCard->save();
-        } catch (\Throwable $th) {
-            Log::error("SQL error: ", ['message' => $th->getMessage()]);
+            if (!$request->get('hasClieckedStart')) {
+                throw new Exception('開始ボタンがクリックされていません');
+            }
+            $timeCardId = $this->timeCardService->addStartTimeCard($inputs);
+        } catch (Exception $th) {
+            Log::error($th->getMessage());
             return $this->showError('作業開始');
         }
 
         return back()
-            ->with('startId', $timeCard->id)
-            ->with('success', '作業を開始しました。');
+            ->with([
+                'startId' => $timeCardId,
+                'success' => '作業を開始しました。'
+            ]);
     }
     
     /**
@@ -80,35 +80,24 @@ class TimeCardController extends Controller
      */
     public function end(EndTimeCardRequest $request, TimeCard $timeCard)
     {
-        Log::info("start end", ['request' => $request->all(), 'timeCard' => $timeCard->toArray()]);
-
-        if ($request->get('hasClieckedEnd') != 1) {
-            return $this->showError('作業終了');
-        }
+        $inputs = $request->except('_token');
+        Log::info("start end", ['request' => $inputs, 'timeCard' => $timeCard->toArray()]);
 
         try {
-            // 開始と終了の日付が異なる場合、レコードを分ける
-            $now = Carbon::now();
-            $timeCard->memo = $request->get('memo');
-            $timeCard->category_id = $request->get('category_id');
-            if ($timeCard->date !== $now->format('Y-m-d')) {
-                $timeCard->end_time = '23:59';
-                $timeCard->save();
-
-                $timeCard = $timeCard->replicate();
-                $timeCard->date = $now;
-                $timeCard->start_time = '00:00';
+            if (!$request->get('hasClieckedEnd')) {
+                throw new Exception('終了ボタンはクリックされていません');
             }
-            $timeCard->end_time = $now->format('H:i');
-            $timeCard->save();
-        } catch (\Throwable $th) {
-            Log::error("SQL error: ", ['message' => $th->getMessage()]);
+            $this->timeCardService->editEndTimeCard($inputs, $timeCard);
+        } catch (Exception $th) {
+            Log::error($th->getMessage());
             return $this->showError('作業終了');
         }
-        
+
         return back()
-            ->with('endId', $timeCard->id)
-            ->with('success', '作業を終了しました。');
+            ->with([
+                'endId' => $timeCard->id,
+                'success', '作業を終了しました。'
+            ]);
     }
 
     /**

@@ -34,8 +34,6 @@ class TimeCard extends Model
     {
         Carbon::setLocale('ja');
         $this->user_id = Auth::id();
-        $this->date = Carbon::now();
-        $this->start_time = Carbon::now();
     }
 
     /**
@@ -97,7 +95,7 @@ class TimeCard extends Model
     {
         return Attribute::make(
             get: fn () => Carbon::createFromTimeString($this->start_time)
-                    ->format('H時m分')
+                    ->format('H時i分')
         );
     }
 
@@ -105,7 +103,7 @@ class TimeCard extends Model
     {
         return Attribute::make(
             get: fn () => Carbon::createFromTimeString($this->end_time)
-                    ->format('H時m分')
+                    ->format('H時i分')
         );
     }
 

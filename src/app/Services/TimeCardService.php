@@ -3,8 +3,12 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Models\TimeCard;
 use App\Repositories\TimeCardRepository;
 use App\Services\Service;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class TimeCardService extends Service
 {
@@ -61,5 +65,43 @@ class TimeCardService extends Service
     {
         return $this->categoryRepository->all()
             ->pluck('name', 'id');
+    }
+
+    public function addStartTimeCard(array $inputs)
+    {
+        try {
+            $inputs['date'] = Carbon::now();
+            $inputs['start_time'] = Carbon::now();
+            $inputs['end_time'] = null;
+            return $this->timeCardRepository->addTimeCard($inputs)
+                ->only('id');
+        } catch (Exception $th) {
+            Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
+            Log::error($th->__toString());
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    public function editEndTimeCard(array $inputs, TimeCard $timeCard)
+    {
+        $now = Carbon::now();
+        try {
+            // 開始と終了の日付が異なる場合、レコードを分ける
+            if ($timeCard->date != $now->format('Y-m-d 00:00:00')) {
+                $inputs['end_time'] = '23:59';
+                $inputs = $this->timeCardRepository->editTimeCard($inputs, $timeCard);
+
+                $timeCard = $timeCard->replicate();
+                $inputs['date'] = $now;
+                $inputs['start_time'] = '00:00';
+            }
+            $inputs['end_time'] = $now->format('H:i');
+            $timeCard = $this->timeCardRepository->editTimeCard($inputs, $timeCard);
+
+        } catch (Exception $th) {
+            Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
+            Log::error($th->__toString());
+            throw new Exception($th->getMessage());
+        }
     }
 }
