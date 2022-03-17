@@ -120,4 +120,17 @@ class TimeCardService extends Service
             throw new Exception($th->getMessage());
         }
     }
+
+    /**
+     * タイムカードデータを削除
+     *
+     * @param TimeCard $timeCard
+     * @return void
+     */
+    public function removeTimeCard(TimeCard $timeCard)
+    {
+        Log::debug($timeCard);
+        $this->timeCardRepository
+            ->removeTimeCard($timeCard);
+    }
 }

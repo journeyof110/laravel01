@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\TimeCard;
 use App\Repositories\Repository;
+use Illuminate\Support\Facades\Log;
 
 class TimeCardRepository extends Repository
 {
@@ -18,7 +19,6 @@ class TimeCardRepository extends Repository
         $timeCard = new TimeCard();
         $timeCard->fill($inputs);
         $timeCard->save();
-
         return $timeCard;
     }
 
@@ -63,5 +63,16 @@ class TimeCardRepository extends Repository
             ->latests($oldests)
             ->withs($withs)
             ->paginate($maxRow);
+    }
+
+    /**
+     * タイムカードを削除
+     *
+     * @param TimeCard $timeCard
+     * @return void
+     */
+    public function removeTimeCard(TimeCard $timeCard)
+    {
+        $timeCard->delete();
     }
 }

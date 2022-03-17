@@ -215,7 +215,7 @@ class TimeCardController extends Controller
     {
         Log::info("start destroy", ['timeCard' => $timeCard]);
         try {
-            $timeCard->delete();
+            $this->timeCardService->removeTimeCard($timeCard);
         } catch (\Throwable $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
             return $this->showError('タイムカード削除');
