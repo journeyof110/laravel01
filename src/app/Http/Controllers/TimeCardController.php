@@ -169,19 +169,19 @@ class TimeCardController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * タイムカードの更新画面を表示
      *
      * @param  \App\Models\TimeCard  $timeCard
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, TimeCard $timeCard)
     {
-        $categories = Category::all()->pluck('name', 'id');
+        $categories = $this->timeCardService->getCategorySelectList();
         return view('time_card.edit', ['timeCard' => $timeCard, 'categories' => $categories]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * タイムカードデータを更新
      *
      * @param  \App\Http\Requests\UpdateTimeCardRequest  $request
      * @param  \App\Models\TimeCard  $timeCard
@@ -189,13 +189,12 @@ class TimeCardController extends Controller
      */
     public function update(UpdateTimeCardRequest $request, TimeCard $timeCard)
     {
-        Log::info("start update", ['request' => $request->all()]);
+        $inputs = $request->except('_token');
+        Log::info("start update", ['request' => $inputs]);
         try {
-            $inputs = $request->except('_token', '_method');
-            $timeCard->fill($inputs);
-            $timeCard->save();
-        } catch (\Throwable $th) {
-            Log::error("SQL error: ", ['message' => $th->getMessage()]);
+            $timeCard = $this->timeCardService->editTimeCard($inputs, $timeCard);
+        } catch (Exception $th) {
+            Log::error($th->getMessage());
             return $this->showError('タイムカード更新');
         }
 
