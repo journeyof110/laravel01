@@ -56,7 +56,7 @@
           <label>メモ</label>
         </div>
         <div class="col-md-10 input-group date">
-          {{$timeCard->memo}}
+          {!! $timeCard->markdown_memo !!}
         </div>
       </div>
     </div>

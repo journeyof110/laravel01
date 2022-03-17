@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use JeroenNoten\LaravelAdminLte\View\Components\Widget\Card;
 
 class TimeCard extends Model
@@ -105,6 +106,18 @@ class TimeCard extends Model
         return Attribute::make(
             get: fn () => Carbon::createFromTimeString($this->end_time)
                     ->format('H時i分')
+        );
+    }
+
+    /**
+     * メモをマークダウン形式で表示
+     *
+     * @return Attribute
+     */
+    public function markdownMemo(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Str::markdown(nl2br($this->memo))
         );
     }
 
