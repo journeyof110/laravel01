@@ -119,7 +119,7 @@
                         </td>
                       </tr>
                       @endforeach
-                      {{-- {{ $timeCards->links('pagination::bootstrap-4') }} --}}
+                      {{ $timeCards->links('pagination::bootstrap-4') }}
                   </tbody>
                 </table>
               </div>
@@ -127,40 +127,9 @@
           </div>
         </div>
     </div>
-    <div class="modal fade" id="modal" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">削除の確認</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>タイムカードデータを削除しますか？</p>
-            <blockquote class="quote-danger">
-              <small id="modal-timecard-day"></small>
-            </blockquote>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
-            {{ Form::open(['method' => 'delete']) }}
-              {!! Form::submit('削除する', ['class' => 'btn btn-primary']) !!}
-            {{ Form::close() }}
-          </div>
-        </div>
-      </div>
-    </div>
+    @include('time_card.components.modal')
 @stop
 
 @section('js-for-page')
-  <script>
-    // モーダルにパラメータ渡し
-    $('.btn-delete').on('click', function (event) {
-      var dayTime = $(this).data('daytime');
-      var link = $(this).data('link');
-      $('#modal-timecard-day').html(dayTime);
-      $('.modal-footer form').attr('action', link);
-    });
-  </script>
+<script src="{{ mix('js/time_card/modal.js') }}?={{config('version.number')}}"></script>
 @stop
