@@ -90,6 +90,24 @@ class TimeCardService extends Service
     }
 
     /**
+     * タイムカードデータを作成する
+     *
+     * @param array $inputs
+     * @return object
+     */
+    public function addTimeCard(array $inputs): object
+    {
+        try {
+            return $this->timeCardRepository
+                ->addTimeCard($inputs);
+        } catch (Exception $th) {
+            Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
+            Log::error($th->__toString());
+            throw new Exception($th->getMessage());
+        }
+    }
+
+    /**
      * 終了ボタンによりタイムカードデータを更新
      *
      * @param array $inputs
