@@ -25,7 +25,7 @@ class TimeCardController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * タイムカード入力フォームと一覧画面を表示
      *
      * @return \Illuminate\Http\Response
      */
