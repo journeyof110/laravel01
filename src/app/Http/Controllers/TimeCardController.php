@@ -203,7 +203,7 @@ class TimeCardController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * タイムカードデータを削除する
      *
      * @param  \App\Models\TimeCard  $timeCard
      * @return \Illuminate\Http\Response
