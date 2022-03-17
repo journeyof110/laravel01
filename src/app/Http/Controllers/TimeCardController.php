@@ -125,32 +125,30 @@ class TimeCardController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * タイムカードの作成画面を表示
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
         Log::info("start create");
-        $categories = Category::all()->pluck('name', 'id');
+        $categories = $this->timeCardService->getCategorySelectList();
         return view('time_card.create', ['categories' => $categories]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * タイムカードデータを作成する
      *
      * @param  \App\Http\Requests\StoreTimeCardRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTimeCardRequest $request)
     {
-        Log::info("start store", ['request' => $request->all()]);
+        $inputs = $request->except('_token');
+        Log::info("start store", ['request' => $inputs]);
         try {
-            $timeCard = new TimeCard();
-            $inputs = $request->except('_token');
-            $timeCard->fill($inputs);
-            $timeCard->save();
-        } catch (\Throwable $th) {
+            $timeCard = $this->timeCardService->addTimeCard($inputs);
+        } catch (Exception $th) {
             Log::error("SQL error: ", ['message' => $th->getMessage()]);
             return $this->showError('タイムカード作成');
         }
