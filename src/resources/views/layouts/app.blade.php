@@ -11,5 +11,6 @@
 @stop
 
 @section('css')
-    @yield('css-for-page')
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  @yield('css-for-page')
 @endsection
