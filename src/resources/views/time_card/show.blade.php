@@ -2,7 +2,7 @@
 
 @section('title', 'AdminLTE|タイムカードの詳細')
 
-@section('content_title', 'タイムカードの詳細')
+@section('content-title', 'タイムカードの詳細')
 
 @section('content')
 <div class="container-fluid">

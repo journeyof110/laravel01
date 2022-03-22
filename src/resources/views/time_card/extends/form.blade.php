@@ -2,7 +2,7 @@
 
 @section('title', 'AdminLTE|タイムカードの{{$type}}')
 
-@section('content_title', 'タイムカードの{{$type}}')
+@section('content-title', sprintf('タイムカードの%s', $type))
 
 @section('content')
 <div class="container-fluid">

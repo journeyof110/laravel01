@@ -39,7 +39,7 @@
 
 @section('title', 'AdminLTE|タイムカード')
 
-@section('content_title', 'タイムカード')
+@section('content-title', 'タイムカード')
 
 @section('content')
     <div class="row">
