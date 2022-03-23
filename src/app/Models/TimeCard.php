@@ -58,7 +58,8 @@ class TimeCard extends Model
     public function endTime(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => is_null($value) ? null :Carbon::parse($value)->format('H:i'),
+            get: fn ($value) => is_null($value) ? null : Carbon::parse($value)->format('H:i'),
+            set: fn ($value) => empty($value) ? null : $value,
         );
     }
 
@@ -104,7 +105,7 @@ class TimeCard extends Model
     public function endTimeFormat(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::createFromTimeString($this->end_time)
+            get: fn () => is_null($this->end_time) ? '' : Carbon::createFromTimeString($this->end_time)
                     ->format('H時i分')
         );
     }
