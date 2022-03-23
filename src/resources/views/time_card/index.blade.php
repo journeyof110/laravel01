@@ -44,7 +44,7 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card card-secondary card-outline card-tabs">
+            <div class="card card-olive card-outline card-tabs">
               <div class="card-header p-0 pt-1">
                 <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                   <li class="nav-item">
