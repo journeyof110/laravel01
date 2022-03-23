@@ -13,7 +13,7 @@ $openForm = [
 
 @section('content')
 <div class="container-fluid">
-  <div class="card card-default">
+  <div class="card card-olive card-outline card-default">
     {!! Form::open($openForm) !!}
     <div class="card-header">
       <h3 class="card-title">更新</h3>
