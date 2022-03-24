@@ -46,12 +46,16 @@
         <div class="col-12">
             <div class="card card-olive card-outline card-tabs">
               <div class="card-header p-0 pt-1">
-                <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                <ul class="nav nav-pills ml-auto p-2" id="custom-tabs-four-tab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-four-input-tab" data-toggle="pill" href="#custom-tabs-four-input" role="tab" aria-controls="custom-tabs-four-input" aria-selected="true">入力</a>
+                    <a class="nav-link active" id="custom-tabs-four-input-tab" data-toggle="pill" href="#custom-tabs-four-input" role="tab" aria-controls="custom-tabs-four-input" aria-selected="true">
+                      入力
+                    </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-list-tab" data-toggle="pill" href="#custom-tabs-four-list" role="tab" aria-controls="custom-tabs-four-list" aria-selected="false">一覧</a>
+                    <a class="nav-link" id="custom-tabs-four-list-tab" data-toggle="pill" href="#custom-tabs-four-list" role="tab" aria-controls="custom-tabs-four-list" aria-selected="false">
+                      一覧
+                    </a>
                   </li>
                   <li class="nav-item ml-auto pr-2">
                     <a class="btn btn-block btn-default" href="{{route('time_card.create')}}">
