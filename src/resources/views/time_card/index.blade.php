@@ -53,8 +53,11 @@
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-four-list-tab" data-toggle="pill" href="#custom-tabs-four-list" role="tab" aria-controls="custom-tabs-four-list" aria-selected="false">一覧</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-create-tab" data-toggle="pill" href="#custom-tabs-four-create" role="tab" aria-controls="custom-tabs-four-create" aria-selected="false">作成</a>
+                  <li class="nav-item ml-auto pr-2">
+                    <a class="btn btn-block btn-default" href="{{route('time_card.create')}}">
+                      <i class="fas fa-pen"></i>
+                      作成
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -118,15 +121,6 @@
                           {{ $timeCards->links('pagination::bootstrap-4') }}
                       </tbody>
                     </table>
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-create" role="tabpanel" aria-labelledby="custom-tabs-four-create-tab">
-                    @include('time_card.components.form')
-                    <div class="row">
-                      <div class="col-sm-3">
-                        {!! Form::submit('作成', ['class' => 'btn btn-primary']) !!}
-                        <a href="{{route('time_card.index')}}" class="btn btn-secondary">戻る</a>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
