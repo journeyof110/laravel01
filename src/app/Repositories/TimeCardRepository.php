@@ -9,34 +9,6 @@ use Illuminate\Support\Facades\Log;
 class TimeCardRepository extends Repository
 {
     /**
-     * タイムカードデータを追加
-     *
-     * @param array $inputs
-     * @return object
-     */
-    public function addTimeCard(array $inputs): object
-    {
-        $timeCard = new TimeCard();
-        $timeCard->fill($inputs);
-        $timeCard->save();
-        return $timeCard;
-    }
-
-    /**
-     * タイムカードデータを更新
-     *
-     * @param array $inputs
-     * @param TimeCard $timeCard
-     * @return object
-     */
-    public function editTimeCard(array $inputs, TimeCard $timeCard): object
-    {
-        $timeCard->fill($inputs);
-        $timeCard->save();
-        return $timeCard;
-    }
-
-    /**
      * 最新のタイムカードデータを取得
      *
      * @param array $latests
@@ -66,12 +38,40 @@ class TimeCardRepository extends Repository
     }
 
     /**
+     * タイムカードデータを追加
+     *
+     * @param array $inputs
+     * @return object
+     */
+    public function add(array $inputs): object
+    {
+        $timeCard = new TimeCard();
+        $timeCard->fill($inputs);
+        $timeCard->save();
+        return $timeCard;
+    }
+
+    /**
+     * タイムカードデータを更新
+     *
+     * @param array $inputs
+     * @param TimeCard $timeCard
+     * @return object
+     */
+    public function edit(array $inputs, TimeCard $timeCard): object
+    {
+        $timeCard->fill($inputs);
+        $timeCard->save();
+        return $timeCard;
+    }
+
+    /**
      * タイムカードを削除
      *
      * @param TimeCard $timeCard
      * @return void
      */
-    public function removeTimeCard(TimeCard $timeCard)
+    public function remove(TimeCard $timeCard)
     {
         $timeCard->delete();
     }

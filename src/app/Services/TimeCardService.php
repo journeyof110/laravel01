@@ -80,7 +80,7 @@ class TimeCardService extends Service
             $inputs['start_time'] = Carbon::now();
             $inputs['end_time'] = null;
             return $this->timeCardRepository
-                ->addTimeCard($inputs)
+                ->add($inputs)
                 ->id;
         } catch (Exception $th) {
             Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
@@ -99,7 +99,7 @@ class TimeCardService extends Service
     {
         try {
             return $this->timeCardRepository
-                ->addTimeCard($inputs);
+                ->add($inputs);
         } catch (Exception $th) {
             Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
             Log::error($th->__toString());
@@ -121,7 +121,7 @@ class TimeCardService extends Service
             // 開始と終了の日付が異なる場合、レコードを分ける
             if ($timeCard->date != $now->format('Y-m-d 00:00:00')) {
                 $inputs['end_time'] = '23:59';
-                $inputs = $this->timeCardRepository->editTimeCard($inputs, $timeCard);
+                $inputs = $this->timeCardRepository->edit($inputs, $timeCard);
 
                 $timeCard = $timeCard->replicate();
                 $inputs['date'] = $now;
@@ -129,7 +129,7 @@ class TimeCardService extends Service
             }
             $inputs['end_time'] = $now->format('H:i');
             return $this->timeCardRepository
-                ->editTimeCard($inputs, $timeCard)
+                ->edit($inputs, $timeCard)
                 ->id;
 
         } catch (Exception $th) {
@@ -150,7 +150,7 @@ class TimeCardService extends Service
     {
         try {
             return $this->timeCardRepository
-                ->editTimeCard($inputs, $timeCard);
+                ->edit($inputs, $timeCard);
         } catch (Exception $th) {
             Log::error(["SQL error: ", ['message' => $th->getMessage()]]);
             Log::error($th->__toString());
