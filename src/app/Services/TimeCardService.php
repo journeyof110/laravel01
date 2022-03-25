@@ -168,6 +168,6 @@ class TimeCardService extends Service
     {
         Log::debug($timeCard);
         $this->timeCardRepository
-            ->removeTimeCard($timeCard);
+            ->remove($timeCard);
     }
 }
