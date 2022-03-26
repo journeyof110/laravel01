@@ -12,6 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/loading.js', 'public/js')
     .js('resources/js/toast.js', 'public/js')
     .js('resources/js/datetimepicker.js', 'public/js')
     .js('resources/js/time_card/modal.js', 'public/js/time_card')

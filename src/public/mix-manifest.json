@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/loading.js": "/js/loading.js",
     "/js/toast.js": "/js/toast.js",
     "/js/datetimepicker.js": "/js/datetimepicker.js",
     "/js/time_card/modal.js": "/js/time_card/modal.js",

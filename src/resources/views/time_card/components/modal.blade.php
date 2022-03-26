@@ -16,7 +16,7 @@
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
         {{ Form::open(['method' => 'delete']) }}
-          {!! Form::submit('削除する', ['class' => 'btn btn-primary']) !!}
+          {!! Form::submit('削除する', ['class' => 'btn btn-primary modal-loading']) !!}
         {{ Form::close() }}
       </div>
     </div>
