@@ -116,8 +116,15 @@
                               <a class="btn btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}">
                                 <i class="fas fa-edit"></i>
                               </a>
-                              <button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->date_and_time_format}}' data-link="{{route('time_card.destroy', ['time_card' => $timeCard->id])}}">
+                              <button type="button" class="btn btn-default btn-modal" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->date_and_time_format}}' data-link="{{route('time_card.destroy', ['time_card' => $timeCard->id])}}">
                                 <i class="fas fa-trash"></i>
+                                <div class="d-none modal-body">
+                                  <p>{{sprintf('%s【開始】%s 【終了】%s', $timeCard->dateFormat, $timeCard->startTimeFormat, $timeCard->endTimeFormat)}}</p>
+                                  <small>
+                                    {{sprintf('%s', $timeCard->category->name)}}<br>
+                                    {{sprintf('%s', $timeCard->memo)}}
+                                  </small>
+                                </div>
                               </button>
                             </td>
                           </tr>
@@ -135,10 +142,23 @@
           </div>
         </div>
     </div>
-    @include('time_card.components.modal')
+    <x-adminlte-modal id="modal">
+      <x-slot:icon>fas fa-trash text-danger</x-slot>
+      <x-slot:title><span class="text-danger">削除の確認</span></x-slot>
+      <x-slot:footerSlot>
+        <x-adminlte-button class="btn btn-default" type="button" data-dismiss="modal" label="キャンセル"/>
+        {{ Form::open(['method' => 'delete']) }}
+          {!! Form::submit('削除する', ['class' => 'btn btn-primary modal-loading']) !!}
+        {{ Form::close() }}
+      </x-slot>
+      <p>タイムカードデータを削除しますか？</p>
+      <blockquote class="quote-danger">
+        <div id="put-modal-body"></div>
+      </blockquote>
+    </x-adminlte-modal>
 @stop
 
 @section('js-for-page')
-<script src="{{ mix('js/time_card/modal.js') }}?={{config('version.number')}}"></script>
+<script src="{{ mix('js/modal.js') }}?={{config('version.number')}}"></script>
 <script src="{{ mix('js/datetimepicker.js') }}?={{config('version.number')}}"></script>
 @stop
