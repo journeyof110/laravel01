@@ -1,0 +1,1 @@
+$(".card-loading, .modal-loading").on("click",(function(){var a=$("#hiding-loading .overlay").hide().fadeIn(200),d=".card";-1!=$(this).attr("class").split(" ").indexOf("modal-loading")&&(d=".modal-dialog"),$(d).append(a)}));

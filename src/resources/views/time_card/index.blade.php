@@ -1,14 +1,14 @@
 @php
   $startOptions = [
     'type' => 'submit',
-    'class' => 'btn btn-app bg-lightblue',
+    'class' => 'btn btn-app bg-lightblue card-loading',
     'name' => 'hasClieckedStart',
     'formaction' => route('time_card.start'),
     'value' => true,
   ];
   $endOptions = [
     'type' => 'submit',
-    'class' => 'btn btn-app bg-maroon',
+    'class' => 'btn btn-app bg-maroon card-loading',
     'name' => 'hasClieckedEnd',
     'formaction' => route('time_card.end', ['time_card' => optional($latestTimeCard)->id]),
     'value' => true,
