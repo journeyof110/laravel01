@@ -34,12 +34,12 @@ class TimeCardController extends Controller
         Log::info('start index');
         $latestTimeCard = $this->timeCardService->working();
         $timeCards = $this->timeCardService->getPageList($request);
-        $categories = $this->timeCardService->getCategorySelectList();
+        $categorieList = $this->timeCardService->getCategorySelectList();
 
         return view('time_card.index', [
             'latestTimeCard' => $latestTimeCard,
             'timeCards' => $timeCards,
-            'categories' => $categories,
+            'categorieList' => $categorieList,
         ]);
     }
 
