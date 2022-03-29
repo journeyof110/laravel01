@@ -1,37 +1,14 @@
 @php
-  $startOptions = [
-    'type' => 'submit',
-    'class' => 'btn btn-app bg-lightblue card-loading',
-    'name' => 'hasClieckedStart',
-    'formaction' => route('time_card.start'),
-    'value' => true,
-  ];
-  $endOptions = [
-    'type' => 'submit',
-    'class' => 'btn btn-app bg-maroon card-loading',
-    'name' => 'hasClieckedEnd',
-    'formaction' => route('time_card.end', ['time_card' => optional($latestTimeCard)->id]),
-    'value' => true,
-  ];
-
-  $categoryIdOptions = [
-    'class' => 'custom-select '. (!$errors->has('category_id') ? '' : 'is-invalid'),
-  ];
-
-  $memoOptions = [
-    'class' => 'form-control ' . (!$errors->has('memo') ? '' : 'is-invalid'),
-    'rows' => 10,
-    'placeholder' => 'メモ'
-  ];
-
+  $startClass = 'bg-lightblue card-loading';
+  $endClass = 'bg-maroon card-loading';
   if (isset($latestTimeCard->id) && is_null($latestTimeCard->end_time)) {
-    $startOptions['disabled'] = 'disabled';
-    $startOptions['value'] = false;
-    // $startTime = $latestTimeCard->start_datetime;
+    $startClass .= ' disabled';
+    $startTimeValue = false;
+    $endTimeValue = true;
   } else {
-    $endOptions['disabled'] = 'disabled';
-    $endOptions['value'] = false;
-    // $startTime = null;
+    $endClass .= ' disabled';
+    $startTimeValue = true;
+    $endTimeValue = false;
   }
 @endphp
 
@@ -49,6 +26,7 @@
           <ul class="nav nav-pills">
             <li class="nav-item p-2 pl-3">
               <a class="d-block" data-toggle="collapse" href="#collapseOne">
+                <i class="fas fa-arrow-down"></i>
                 入力
               </a>
             </li>
@@ -64,23 +42,30 @@
           <div class="card-body">
             {!! Form::open() !!}
             <div class="row">
-              <div class="col-sm-2">
-                {!! Form::button('<i class="fas fa-play"></i>開始', $startOptions) !!}
+              <div class="col-sm-4">
+                <x-adminlte-button :class="$startClass" type="submit" name='hasClieckedStart' formaction="{{route('time_card.start')}}" :value="$startTimeValue">
+                  <x-slot:label>開始</x-slot>
+                  <x-slot:icon>fas fa-play</x-slot>
+                  <x-slot:theme>app</x-slot>
+                </x-adminlte-button>
               </div>
-              <div class="col-sm-2">
-                {!! Form::button('<i class="fas fa-stop"></i>終了', $endOptions) !!}
+              <div class="col-sm-4">
+                <x-adminlte-button :class="$endClass" type="submit" name='hasClieckedEnd' formaction="{{route('time_card.end', ['time_card' => optional($latestTimeCard)->id])}}" :value="$endTimeValue">
+                  <x-slot:label>終了</x-slot>
+                  <x-slot:icon>fas fa-stop</x-slot>
+                  <x-slot:theme>app</x-slot>
+                </x-adminlte-button>
               </div>
               <div class="col-sm-8">
-                {!! Form::select('category_id', $categories, optional($latestTimeCard)->category_id, $categoryIdOptions) !!}
-                <span class="error invalid-feedback">
-                  @error('category_id') {{$message}} @enderror
-                </span>
+                <x-adminlte-select name="category_id">
+                  <x-adminlte-options :options="$categorieList" :selected="old('category_id', optional($latestTimeCard)->category_id)">
+                  </x-adminlte-options>
+                </x-adminlte-select>
               </div>
               <div class="col-sm-12">
-                {!! Form::textarea('memo', $latestTimeCard->memo ?? '', $memoOptions) !!}
-                <span class="error invalid-feedback">
-                  @error('category_id') {{$message}} @enderror
-                </span>
+                <x-adminlte-text-editor name='memo' rows='10' placeholder="メモ">
+                  {{old('memo', $latestTimeCard->memo ?? '')}}
+                </x-adminlte-text-editor>
               </div>
             </div>
             {!! Form::close() !!}

@@ -59,12 +59,13 @@ class TimeCardService extends Service
     /**
      * プルダウンメニュー用のカテゴリーリストを取得
      *
-     * @return object
+     * @return array
      */
-    public function getCategorySelectList(): object
+    public function getCategorySelectList(): array
     {
         return $this->categoryRepository->all()
-            ->pluck('name', 'id');
+            ->pluck('name', 'id')
+            ->toArray();
     }
 
     /**
