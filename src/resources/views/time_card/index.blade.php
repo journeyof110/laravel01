@@ -107,18 +107,31 @@
                       <a class="btn btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}" title="更新">
                         <i class="fas fa-edit"></i>
                       </a>
-                      <x-adminlte-button class="btn-modal" type="button" data-toggle="modal" data-target="#modal" :data-link="route('time_card.destroy', ['time_card' => $timeCard->id])" title="削除">
+                      <x-adminlte-button class="btn-modal" type="button" data-toggle="modal" data-target="#modal{{$timeCard->id}}" title="削除">
                         <x-slot:icon>fas fa-trash</x-slot>
-                        <x-slot:label>
-                          <div class="d-none modal-body">
-                            <p>{{sprintf('%s【開始】%s 【終了】%s', $timeCard->dateFormat, $timeCard->startTimeFormat, $timeCard->endTimeFormat)}}</p>
-                            <small>
-                              {{sprintf('%s', $timeCard->category->name)}}<br>
-                              {{sprintf('%s', $timeCard->memo)}}
-                            </small>
-                          </div>
-                        </x-slot>
                       </x-adminlte-button>
+                      <x-adminlte-modal id="modal{{$timeCard->id}}">
+                        <x-slot:icon>fas fa-trash text-danger</x-slot>
+                        <x-slot:title><span class="text-danger">削除の確認</span></x-slot>
+                        <x-slot:footerSlot>
+                          <x-adminlte-button class="btn btn-default" type="button" data-dismiss="modal" label="キャンセル"/>
+                          {{ Form::open(['url' => route('time_card.destroy', ['time_card' => $timeCard->id]), 'method' => 'delete']) }}
+                            {!! Form::submit('削除する', ['class' => 'btn btn-primary modal-loading']) !!}
+                          {{ Form::close() }}
+                        </x-slot>
+                        <p>タイムカードデータを削除しますか？</p>
+                        <blockquote class="quote-danger text-left">
+                          <div id="put-modal-body">
+                            <div id="put-modal-body">
+                              <p>{{sprintf('%s【開始】%s 【終了】%s', $timeCard->dateFormat, $timeCard->startTimeFormat, $timeCard->endTimeFormat)}}</p>
+                              <small>
+                                {{sprintf('%s', $timeCard->category->name)}}<br>
+                                {{sprintf('%s', $timeCard->memo)}}
+                              </small>
+                            </div>
+                          </div>
+                        </blockquote>
+                      </x-adminlte-modal>
                     </td>
                   </tr>
                   @endforeach
@@ -144,9 +157,4 @@
       <div id="put-modal-body"></div>
     </blockquote>
   </x-adminlte-modal>
-@stop
-
-@section('js-for-page')
-<script src="{{ mix('js/modal.js') }}?={{config('version.number')}}"></script>
-<script src="{{ mix('js/datetimepicker.js') }}?={{config('version.number')}}"></script>
 @stop

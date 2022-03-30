@@ -1,1 +1,0 @@
-$(".btn-modal").on("click",(function(o){var l=$(this).children(".modal-body").html();console.log($(this).children(".modal-body").html());var t=$(this).data("link");$("#put-modal-body").html(l),$(".modal-footer form").attr("action",t)}));
