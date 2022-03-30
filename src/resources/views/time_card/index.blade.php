@@ -101,22 +101,24 @@
                     <td>{{$timeCard->end_time}}</td>
                     <td>{{$timeCard->category->name}}</td>
                     <td class="col-sm-2 text-center ">
-                      <a class="btn btn-default" href="{{route('time_card.show', ['time_card' => $timeCard->id])}}" >
+                      <a class="btn btn-default" href="{{route('time_card.show', ['time_card' => $timeCard->id])}}" title="詳細">
                         <i class="fas fa-file-alt"></i>
                       </a>
-                      <a class="btn btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}">
+                      <a class="btn btn-default" href="{{route('time_card.edit', ['time_card' => $timeCard->id])}}" title="更新">
                         <i class="fas fa-edit"></i>
                       </a>
-                      <button type="button" class="btn btn-default btn-modal" data-toggle="modal" data-target="#modal" data-daytime='{{$timeCard->date_and_time_format}}' data-link="{{route('time_card.destroy', ['time_card' => $timeCard->id])}}">
-                        <i class="fas fa-trash"></i>
-                        <div class="d-none modal-body">
-                          <p>{{sprintf('%s【開始】%s 【終了】%s', $timeCard->dateFormat, $timeCard->startTimeFormat, $timeCard->endTimeFormat)}}</p>
-                          <small>
-                            {{sprintf('%s', $timeCard->category->name)}}<br>
-                            {{sprintf('%s', $timeCard->memo)}}
-                          </small>
-                        </div>
-                      </button>
+                      <x-adminlte-button class="btn-modal" type="button" data-toggle="modal" data-target="#modal" :data-link="route('time_card.destroy', ['time_card' => $timeCard->id])" title="削除">
+                        <x-slot:icon>fas fa-trash</x-slot>
+                        <x-slot:label>
+                          <div class="d-none modal-body">
+                            <p>{{sprintf('%s【開始】%s 【終了】%s', $timeCard->dateFormat, $timeCard->startTimeFormat, $timeCard->endTimeFormat)}}</p>
+                            <small>
+                              {{sprintf('%s', $timeCard->category->name)}}<br>
+                              {{sprintf('%s', $timeCard->memo)}}
+                            </small>
+                          </div>
+                        </x-slot>
+                      </x-adminlte-button>
                     </td>
                   </tr>
                   @endforeach
