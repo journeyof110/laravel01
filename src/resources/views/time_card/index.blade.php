@@ -143,18 +143,4 @@
       </div>
     </div>
   </div>
-  <x-adminlte-modal id="modal">
-    <x-slot:icon>fas fa-trash text-danger</x-slot>
-    <x-slot:title><span class="text-danger">削除の確認</span></x-slot>
-    <x-slot:footerSlot>
-      <x-adminlte-button class="btn btn-default" type="button" data-dismiss="modal" label="キャンセル"/>
-      {{ Form::open(['method' => 'delete']) }}
-        {!! Form::submit('削除する', ['class' => 'btn btn-primary modal-loading']) !!}
-      {{ Form::close() }}
-    </x-slot>
-    <p>タイムカードデータを削除しますか？</p>
-    <blockquote class="quote-danger">
-      <div id="put-modal-body"></div>
-    </blockquote>
-  </x-adminlte-modal>
 @stop
