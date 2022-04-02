@@ -66,10 +66,10 @@ class TimeCardController extends Controller
             return $this->showError('作業開始');
         }
 
-        return back()
+        return to_route('time_card.index')
             ->with([
-                'startId' => $timeCardId,
-                'success' => '作業を開始しました。'
+                'startId'       => $timeCardId,
+                'success'   => '作業を開始しました。'
             ]);
     }
     
@@ -95,10 +95,12 @@ class TimeCardController extends Controller
             return $this->showError('作業終了');
         }
 
-        return back()
-            ->with([
-                'endId' => $timeCardId,
-                'success', '作業を終了しました。'
+        return to_route('time_card.index', [
+                'show' => 'list',
+                'date' => Carbon::today()->toDateString()
+            ])->with([
+                'endId'     => $timeCardId,
+                'success'   => '作業を終了しました。'
             ]);
     }
 
