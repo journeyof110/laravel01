@@ -166,6 +166,21 @@ class TimeCard extends Model
     }
 
     /**
+     * 子テーブルを設定
+     *
+     * @param Builder $query
+     * @param array $withs
+     * @return Builder
+     */
+    public function scopeWiths($query, array $withs)
+    {
+        foreach ($withs as $with) {
+            $query = $query->with($with);
+        }
+        return $query;
+    }
+
+    /**
      * ユーザーIDによる絞り込み
      *
      * @param Builder $query
@@ -174,6 +189,21 @@ class TimeCard extends Model
     public function scopeForUser($query, bool $forUser = true): Builder
     {
         return (!$forUser) ? : $query->where('user_id', Auth::id());
+    }
+
+    /**
+     * 絞り込みを設定
+     *
+     * @param Builder $query
+     * @param array $wheres
+     * @return Builder
+     */
+    public function scopeWhereRaws($query, array $wheres): Builder
+    {
+        foreach ($wheres as $column => $value) {
+            $query = $query->whereRaw(sprintf("%s = ?", $column), [$value]);
+        }
+        return $query;
     }
 
     /**
@@ -202,36 +232,6 @@ class TimeCard extends Model
     {
         foreach ($columns as $column) {
             $query = $query->oldest($column);
-        }
-        return $query;
-    }
-
-    /**
-     * 子テーブルを設定
-     *
-     * @param Builder $query
-     * @param array $withs
-     * @return Builder
-     */
-    public function scopeWiths($query, array $withs)
-    {
-        foreach ($withs as $with) {
-            $query = $query->with($with);
-        }
-        return $query;
-    }
-
-    /**
-     * 絞り込みを設定
-     *
-     * @param Builder $query
-     * @param array $wheres
-     * @return Builder
-     */
-    public function scopeWhereRaws($query, array $wheres): Builder
-    {
-        foreach ($wheres as $column => $value) {
-            $query = $query->whereRaw(sprintf("%s = ?", $column), [$value]);
         }
         return $query;
     }
