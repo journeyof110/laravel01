@@ -98,7 +98,7 @@ class TimeCardService extends Service
     {
         $years = ['following' => null, 'previous' => null];
         $followingYear = $current->subYear()->year;
-        $followingYearTimeCard = $monthryTimeCards->where('year', $followingYear)->following();
+        $followingYearTimeCard = $monthryTimeCards->where('year', $followingYear)->last();
         $previousYear = $current->addYear()->addYear()->year;
         $previousYearTimeCard = $monthryTimeCards->where('year', $previousYear)->first();
 
