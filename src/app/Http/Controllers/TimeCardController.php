@@ -7,17 +7,15 @@ use App\Http\Requests\TimeCard\StartTimeCardRequest;
 use App\Http\Requests\TimeCard\StoreTimeCardRequest;
 use App\Http\Requests\TimeCard\UpdateTimeCardRequest;
 use App\Models\TimeCard;
-use App\Models\Category;
 use App\Services\TimeCardService;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Stmt\TryCatch;
 
 class TimeCardController extends Controller
 {
-    public $timeCardService;
+    protected $timeCardService;
 
     public function __construct(TimeCardService $timeCardService)
     {
@@ -32,14 +30,18 @@ class TimeCardController extends Controller
     public function index(Request $request)
     {
         Log::info('start index');
-        $latestTimeCard = $this->timeCardService->working();
-        $timeCards = $this->timeCardService->getPageList($request);
-        $categorieList = $this->timeCardService->getCategorySelectList();
+        $date = $request->get('date');
+        $current = $date ? Carbon::parse($date) : Carbon::now();
+        $monthryTimeCards = $this->timeCardService->getMonthOfTimeCardsByYear();
 
         return view('time_card.index', [
-            'latestTimeCard' => $latestTimeCard,
-            'timeCards' => $timeCards,
-            'categorieList' => $categorieList,
+            'latestTimeCard' => $this->timeCardService->working(),
+            'categorieList' => $this->timeCardService->getCategorySelectList(),
+            'current' => $current,
+            'monthryPageYears' => $this->timeCardService->getLastAndNextYearTimeCardDate(clone $current, $monthryTimeCards),
+            'monthryTimeCards' => $monthryTimeCards,
+            'timeCards' => $this->timeCardService->getPageListByMonth($current),
+            'showCollapses' => $this->timeCardService->getShowCollapses($request),
         ]);
     }
 

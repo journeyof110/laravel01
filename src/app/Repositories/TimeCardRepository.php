@@ -29,12 +29,29 @@ class TimeCardRepository extends Repository
      * @param array $withs
      * @return object
      */
-    public function getPageList(int $maxRow, array $oldests, array $withs): object
+    public function getPageListByMonth(int $maxRow, array $oldests, array $withs, string $year, string $month): object
     {
         return TimeCard::forUser()
             ->latests($oldests)
             ->withs($withs)
-            ->paginate($maxRow);
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->paginate($maxRow)
+            ->withQueryString();
+    }
+
+    /**
+     * グループごとにタイムカードデータを取得
+     *
+     * @param array $groups
+     * @param array $wheres
+     * @return object
+     */
+    public function getGroupRawList(array $groups, array $wheres = []): object
+    {
+        return TimeCard::groupRaws($groups)
+            ->whereRaws($wheres)
+            ->get();
     }
 
     /**
