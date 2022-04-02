@@ -8,6 +8,7 @@ use App\Repositories\TimeCardRepository;
 use App\Services\Service;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TimeCardService extends Service
@@ -44,16 +45,34 @@ class TimeCardService extends Service
     }
 
     /**
+     * タイムカードにあるデータを月ごとに取得
+     *
+     * @return object|null
+     */
+    public function getMonthOfTimeCardsByYear(): ?object
+    {
+        $groups = [
+            'year' => 'year(date)',
+            'month' => 'month(date)'
+        ];
+        return $this->timeCardRepository
+            ->getGroupRawList($groups)
+            ->whereNotNull('year')
+            ->whereNotNull('month');
+    }
+
+
+    /**
      * 一覧表示用のタイムカードデータを取得
      *
      * @return object
      */
-    public function getPageList(): object
+    public function getPageListByMonth(Carbon $current): object
     {
         $oldests = ['date', 'start_time'];
         $withs = ['category'];
         return $this->timeCardRepository
-            ->getPageList(self::MAX_ROW, $oldests, $withs);
+            ->getPageListByMonth(self::MAX_ROW, $oldests, $withs, $current->year, $current->month);
     }
 
     /**
@@ -66,6 +85,49 @@ class TimeCardService extends Service
         return $this->categoryRepository->all()
             ->pluck('name', 'id')
             ->toArray();
+    }
+
+    /**
+     * 月ごとのページネーション用に前年と翌年のタイムカードデータを取得する
+     *
+     * @param Carbon $current
+     * @param object $monthryTimeCards
+     * @return array
+     */
+    public function getLastAndNextYearTimeCardDate(Carbon $current, object $monthryTimeCards): array
+    {
+        $years = ['following' => null, 'previous' => null];
+        $followingYear = $current->subYear()->year;
+        $followingYearTimeCard = $monthryTimeCards->where('year', $followingYear)->following();
+        $previousYear = $current->addYear()->addYear()->year;
+        $previousYearTimeCard = $monthryTimeCards->where('year', $previousYear)->first();
+
+        if ($followingYearTimeCard) {
+            $years['last'] = sprintf('%d-%02d-01', $followingYear, $followingYearTimeCard->month);
+        }
+
+        if ($previousYearTimeCard) {
+            $years['previous'] = sprintf('%d-%02d-01', $previousYear, $previousYearTimeCard->month);
+        }
+        return $years;
+    }
+
+    /**
+     * 表示するカードを設定する
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function getShowCollapses(Request $request): array
+    {
+        $shows['input'] = 'show';
+        $shows['list'] = '';
+        if ($request->has('page') || $request->get('show') === 'list') {
+            $shows['input'] = '';
+            $shows['list'] = 'show';
+        }
+
+        return $shows;
     }
 
     /**

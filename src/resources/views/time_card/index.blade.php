@@ -25,7 +25,7 @@
         <div class="card-header p-1">
           <ul class="nav nav-pills">
             <li class="nav-item p-2 pl-3">
-              <a class="d-block" data-toggle="collapse" href="#collapseOne">
+              <a class="d-block" data-toggle="collapse" href="#collapseInput">
                 <i class="fas fa-arrow-down"></i>
                 入力
               </a>
@@ -38,7 +38,7 @@
             </li>
           </ul>
         </div>
-        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+        <div id="collapseInput" class="collapse {{$showCollapses['input']}}" data-parent="#accordion">
           <div class="card-body">
             {!! Form::open() !!}
             <div class="row">
@@ -76,13 +76,50 @@
         </div>
       </div>
       <div class="card card-gray-dark card-outline">
-        <a class="d-block w-100" data-toggle="collapse" href="#collapseTwo">
-          <div class="card-header">
-            <h4 class="card-title w-100">一覧</h4>
-          </div>
-        </a>
-        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+        <div class="card-header">
+          <a class="d-block" data-toggle="collapse" href="#collapseList">
+            <h4 class="card-title"><i class="fas fa-list pr-1"></i>一覧</h4>
+          </a>
+        </div>
+        <div id="collapseList" class="collapse {{$showCollapses['list']}}" data-parent="#accordion">
           <div class="card-body">
+            <nav aria-label="Page navigation">
+              <ul class="pagination pagination-month justify-content-center">
+                <li class="page-item">
+                  @if (!is_null($monthryPageYears['following']))
+                  <a class="page-link" href="{{route('time_card.index', ['date' => $followingDate, 'show' => 'list'])}}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  @endif
+                </li>
+                @foreach ($monthryTimeCards->where('year', $current->year) as $monthryTimeCard)
+                @if ($monthryTimeCard->month === $current->month)
+                <li class="page-item active">
+                  <div class="page-link">
+                    <p class="page-month">{{$monthryTimeCard->month}}月</p>
+                    <p class="page-year">{{$monthryTimeCard->year}}年</p>
+                  </div>
+                </li>
+                @else
+                <li class="page-item">
+                  <a class="page-link" href="{{route('time_card.index', ['date' => sprintf('%d-%02d-01',$monthryTimeCard->year, $monthryTimeCard->month), 'show' => 'list'])}}">
+                    <p class="page-month">{{$monthryTimeCard->month}}月</p>
+                    <p class="page-year">{{$monthryTimeCard->year}}年</p>
+                  </a>
+                </li>
+                @endif
+                @endforeach
+                <li class="page-item">
+                  @if (!is_null($monthryPageYears['previous']))
+                  <a class="page-link" href="{{route('time_card.index', ['date' => $previousDate, 'show' => 'list'])}}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                  @endif
+                </li>
+              </ul>
+            </nav>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -135,9 +172,11 @@
                     </td>
                   </tr>
                   @endforeach
-                  {{ $timeCards->links('pagination::bootstrap-4') }}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              {{ $timeCards->links('pagination::bootstrap-4') }}
           </div>
         </div>
       </div>

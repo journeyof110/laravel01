@@ -221,21 +221,34 @@ class TimeCard extends Model
         return $query;
     }
 
-    // /**
-    //  * 月によりデータを絞り込む
-    //  *
-    //  * @param Builder $query
-    //  * @param integer $year
-    //  * @param integer $month
-    //  * @return Builder
-    //  */
-    // public function scopeMonth($query, int $year, int $month): Builder
-    // {
-    //     return $query->whereYear('date', $year)->whereMonth('date', $month);
-    // }
+    /**
+     * 絞り込みを設定
+     *
+     * @param Builder $query
+     * @param array $wheres
+     * @return Builder
+     */
+    public function scopeWhereRaws($query, array $wheres): Builder
+    {
+        foreach ($wheres as $column => $value) {
+            $query = $query->whereRaw(sprintf("%s = ?", $column), [$value]);
+        }
+        return $query;
+    }
 
-    // public function scopeGroupByMonth($query)
-    // {
-    //     return $query->groupBy('year', 'month')->select('year', 'month');
-    // }
+    /**
+     * グループにより絞り込む
+     *
+     * @param Builder $query
+     * @param array $groups
+     * @return Builder
+     */
+    public function scopeGroupRaws($query, array $groups): Builder
+    {
+        foreach ($groups as $alias => $column) {
+            $query = $query->selectRaw(sprintf("%s as %s", $column, $alias))
+                ->groupByRaw($column);
+        }
+        return $query;
+    }
 }
