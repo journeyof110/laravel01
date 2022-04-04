@@ -123,20 +123,22 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>日 (曜日)</th>
-                  <th>開始時刻</th>
-                  <th>終了時刻</th>
+                  <th class="col-sm-1">日 (曜日)</th>
+                  <th class="col-sm-1 text-center">開始時刻</th>
+                  <th class="col-sm-1 text-center">終了時刻</th>
                   <th>カテゴリ</th>
+                  <th class="col-sm-1 text-right">作業時間</th>
                   <th class="col-sm-2 text-center">アクション</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($timeCards as $timeCard)
                   <tr class="{{((session('endId') ?? '') == $timeCard->id) ? 'bg-maroon' : (((session('startId') ?? '') == $timeCard->id) ? 'bg-lightblue' : '')}}">
-                    <td>{{$timeCard->day_and_day_name_format . ($endId ?? '') . ($startId ?? '') }}</td>
-                    <td>{{$timeCard->start_time}}</td>
-                    <td>{{$timeCard->end_time}}</td>
+                    <td class="col-sm-1">{{$timeCard->day_and_day_name_format . ($endId ?? '') . ($startId ?? '') }}</td>
+                    <td class="col-sm-1 text-center">{{$timeCard->start_time}}</td>
+                    <td class="col-sm-1 text-center">{{$timeCard->end_time}}</td>
                     <td>{{$timeCard->category->name}}</td>
+                    <td class="col-sm-1 text-right">{{$timeCard->working_time}}</td>
                     <td class="col-sm-2 text-center ">
                       <a class="btn btn-default" href="{{route('time_card.show', ['time_card' => $timeCard->id])}}" title="詳細">
                         <i class="fas fa-file-alt"></i>
