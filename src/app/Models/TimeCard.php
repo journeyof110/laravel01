@@ -123,6 +123,19 @@ class TimeCard extends Model
     }
 
     /**
+     * 作業時間を取得
+     *
+     * @return Attribute
+     */
+    public function workingTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => sprintf('%d分', Carbon::parse($this->end_time)
+                    ->diffInMinutes(Carbon::parse($this->start_time)))
+        );
+    }
+
+    /**
      * 開始日時を取得 'Y年M月D日(ddd) H時mm分'
      *
      * @return Attribute
