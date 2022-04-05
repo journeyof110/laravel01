@@ -1,1 +1,28 @@
-(()=>{var e=Swal.mixin({toast:!0,position:"top-end",color:"white",showConfirmButton:!1,showCloseButton:!0,timer:6e3,timerProgressBar:!0,didOpen:function(e){e.addEventListener("mouseenter",Swal.stopTimer),e.addEventListener("mouseleave",Swal.resumeTimer)}}),t="#result-toast";$(t).length&&e.fire({template:t,background:$(t).data("background-color")})})();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*******************************!*\
+  !*** ./resources/js/toast.js ***!
+  \*******************************/
+var Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  color: 'white',
+  showConfirmButton: false,
+  showCloseButton: true,
+  timer: 6000,
+  timerProgressBar: true,
+  didOpen: function didOpen(toast) {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  }
+});
+var id = '#result-toast';
+
+if ($(id).length) {
+  Toast.fire({
+    template: id,
+    background: $(id).data('background-color')
+  });
+}
+/******/ })()
+;

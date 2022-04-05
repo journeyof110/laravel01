@@ -1,1 +1,17 @@
-$(".card-loading, .modal-loading").on("click",(function(){var a=$("#hiding-loading .overlay").hide().fadeIn(200),d=".card";-1!=$(this).attr("class").split(" ").indexOf("modal-loading")&&(d=".modal-dialog"),$(d).append(a)}));
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************************!*\
+  !*** ./resources/js/loading.js ***!
+  \*********************************/
+$('.card-loading, .modal-loading').on('click', function () {
+  var loading = $('#hiding-loading .overlay').hide().fadeIn(200);
+  var loadingTo = '.card';
+
+  if ($(this).attr('class').split(' ').indexOf('modal-loading') != -1) {
+    loadingTo = '.modal-dialog';
+  }
+
+  $(this).parents(loadingTo).append(loading);
+});
+/******/ })()
+;
