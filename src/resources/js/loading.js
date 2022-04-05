@@ -4,5 +4,5 @@ $('.card-loading, .modal-loading').on('click', function() {
   if ($(this).attr('class').split(' ').indexOf('modal-loading') != -1) {
     loadingTo = '.modal-dialog';
   }
-  $(loadingTo).append(loading);
+  $(this).parents(loadingTo).append(loading);
 });
